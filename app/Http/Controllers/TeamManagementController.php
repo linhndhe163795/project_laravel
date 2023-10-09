@@ -7,7 +7,6 @@ use App\Contracts\Repositories\TeamRepository;
 use App\Helpers\Constant;
 use App\Http\Requests\ValidationRequest;
 use Illuminate\Http\Request;
-use Validation;
 use App\Helpers\ConstantHepler;
 
 class TeamManagementController extends Controller
@@ -56,11 +55,13 @@ class TeamManagementController extends Controller
         // dd($request->input("name"));
         if ($request->has('save')) {
             $data = $request->all();
+            // dd($data);
             $this->teamRepository->create($data);
             $message = Constant::MESSAGE_CREATE_TEAM;
             return view('clients.team.search_team', compact('message'));
         } else {
-            return view('clients.team.create_confirm_team', compact('request'));
+            $currentDateTime = date('Y-m-d H:i:s');
+            return view('clients.team.create_confirm_team', compact('request','currentDateTime'));
         }
     }
     public function delete(Request $request)

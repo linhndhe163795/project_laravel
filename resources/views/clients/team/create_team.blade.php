@@ -5,7 +5,7 @@
         <div class="form-group">
             <label for="id">Name:</label>
             <input type="text" class="form-control" id='name' name="name" placeholder="Input Team Name" value=" {{ old('name') }}">
-            @if ($errors->any())<p class="alert alert-danger">{{ $errors->first('name') }}</p>@endif
+            @if ($errors->has('name'))<p class="alert alert-danger">{{ $errors->first('name') }}</p>@endif
         </div>
         <button type="button" onclick="ResetInput()" class="btn btn-secondary">Reset</button>
         <a href="{{route('team.add_confirm')}}"><button type="submit" name="confirm" class="btn btn-primary">Confirm</button></a>

@@ -48,4 +48,10 @@ class EloquentTeamRepository extends EloquentBaseRepository implements TeamRepos
         ->where('del_flag', '=' , Constant::DEL_FLAG_ACTIVE)->get();
         return $listTeamName;
     }
+    public function getTeamIdByName($name){
+        $team_id = $this->model->select('id')
+        ->where('del_flag', '=' ,Constant::DEL_FLAG_ACTIVE)
+        ->where('name' ,'=', $name)->first();
+        return $team_id->id;
+    }
 }

@@ -22,17 +22,21 @@ use App\Helpers\Constant;
     }
 </style>
 <div class="container">
-    <form action="{{route('employee.create_confirm')}}" method="POST">
+    <form action="{{route('employee.edit_confirm')}}" method="POST">
         <div class="border">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
-                <label for="id">Avatar *</label>
+                <label for="id">ID * </label>
+                <input type="text" readonly class="form-control" name="id" value="{{$request['request']->id}}">
+            </div>
 
+            <div class="form-group">
+                <label for="id">Avatar *</label>
                 <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ $request['avatar'] }}" alt="Hình ảnh">
             </div>
 
             <input type="text" readonly class="form-control" name="avatar_image" value="{{$request['avatar']}}">
-
+            
             <div class="form-group">
                 <label for="id">Team * </label>
                 <input type="text" readonly class="form-control" name="team_id" value="{{$request['team_name']->name}}">
@@ -89,7 +93,7 @@ use App\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Status *</label>&ensp;&ensp;
-                <input type="text" readonly class="form-control" name='status' value="{{ ($request['request']['status'] == Constant::WORKING) ? 'Working' : 'Retired' }}">
+                <input type="text" readonly class="form-control" name='status' value="{{ ($request['request']['status'] == Constant::WORKING) ? 'On Working' : 'Retired' }}">
             </div>
 
             <input type="hidden" class="form-control" name="ins_id" readonly value="{{session('profile')[0]['id']}}">

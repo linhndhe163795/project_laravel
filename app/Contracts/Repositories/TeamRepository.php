@@ -9,4 +9,5 @@ interface TeamRepository extends BaseRepository
     public function find($id);
     public function searchTeamName($name);
     public function getTeamName();
+    public function getTeamIdByName($name);
 }

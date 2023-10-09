@@ -5,9 +5,9 @@ class FileHelper
 {
     public static function storeImage($request, $destinationFolder)
     {
-        if ($request->hasFile('avatar')) {
-            $imageName = $request->file('avatar')->getClientOriginalName();
-            $request->file('avatar')->storeAs($destinationFolder, $imageName);
+        if ($request->hasFile('avatar_image')) {
+            $imageName = $request->file('avatar_image')->getClientOriginalName();
+            $request->file('avatar_image')->storeAs($destinationFolder, $imageName);
             return $imageName; 
         }
         return null;

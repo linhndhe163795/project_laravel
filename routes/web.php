@@ -32,9 +32,10 @@ Route::group(['prefix' => 'management'], function () {
         Route::get("/search/{team?}/{name?}/{email?}",[EmployeeManagementController::class,'search'])->name('employee.search');
         Route::get("/add",[EmployeeManagementController::class,'create'])->name('employee.create');
         Route::post("/add_confirm",[EmployeeManagementController::class,'createConfirm'])->name('employee.create_confirm');
+        Route::get("edit/{id}",[EmployeeManagementController::class,'edit'])->name('employee.edit');
+        Route::post("edit_confirm",[EmployeeManagementController::class,'editconfirm'])->name('employee.edit_confirm');
     });
 });
 
 
 
-// Route::get("/management/employee/search",[EmployeeManagementController::class,'search'])->name('search');

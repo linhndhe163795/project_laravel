@@ -1,3 +1,8 @@
+<?php
+
+use app\Helpers\Constant;
+?>
+
 <title>Employee - Search</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -49,10 +54,10 @@
             <td>{{ $item->fullname }}</td>
             <td>{{ $item->email }}</td>
             <td>
-                <a href="{{ route('team.edit', ['id' => $item->id]) }}"><button class="btn btn-primary">Edit</button></a>
+                <a href="{{ route('employee.edit', ['id' => $item->id]) }}"><button class="btn btn-primary">Edit</button></a>
                 <form style="display: inline;" id="form_delete_{{ $item->id }}" action="{{ route('team.delete', ['id' => $item->id]) }}" method="GET">
                     <input type="hidden" class="form-control" name="id" readonly value="{{ $item->id }}">
-                    <input type="hidden" class="form-control" name="del_flag" readonly value="{{ del_flag_ban }}">
+                    <input type="hidden" class="form-control" name="del_flag" readonly value="{{Constant::DEL_FLAG_BAN}}">
                     <button type="button" class="btn btn-danger" data-id="{{ $item->id }}" onclick="Delete_team(this)">Delete</button>
                 </form>
             </td>
@@ -60,6 +65,7 @@
         @endforeach
         @endif
     </table>
+    <div style="color: red; text-align: center;">{{empty($message) ? "" : $message}}</div>
     <tr>
         <td>
         <td colspan="4">

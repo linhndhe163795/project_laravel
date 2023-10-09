@@ -1,3 +1,7 @@
+<?php
+use app\Helpers\Constant;
+?>
+
 <link rel="stylesheet" href="../../../css/header.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @include('clients.header')
@@ -38,7 +42,7 @@
             <a href="{{ route('team.edit', ['id' => $item->id]) }}"><button class="btn btn-primary">Edit</button></a>
             <form style="display: inline;" id="form_delete_{{ $item->id }}" action="{{ route('team.delete', ['id' => $item->id]) }}" method="GET">
                 <input type="hidden" class="form-control" name="id" readonly value="{{ $item->id }}">
-                <input type="hidden" class="form-control" name="del_flag" readonly value="{{ del_flag_ban }}">
+                <input type="hidden" class="form-control" name="del_flag" readonly value="{{ Constant::DEL_FLAG_BAN}}">
                 <button type="button" class="btn btn-danger" data-id="{{ $item->id }}" onclick="Delete_team(this)">Delete</button>
             </form>
         </td>

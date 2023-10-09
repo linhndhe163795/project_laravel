@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\DB;
 class Employee extends Model
 {
     protected $table = 'm_employees';
+   
     protected $fillable = [
-        'team_id','email','first_name','last_name',
-        'gender','birthday','avatar','salary','position',
-        'status', 'type_of_word'
+        'team_id','email','first_name','last_name','password',
+        'gender','birthday','address','salary','position','avatar',
+        'status', 'type_of_work','ins_id','upd_id','ins_datetime','upd_datetime','del_flag'
     ];
+    public $timestamps = false;
     private $id;
     private $team_id;
     private $email;
@@ -22,6 +24,7 @@ class Employee extends Model
     private $password;
     private $gender;
     private $birthday;
+    private $addres;
     private $avatar;
     private $salary;
     private $position;
@@ -391,6 +394,26 @@ class Employee extends Model
     public function setUpd_datetime($upd_datetime)
     {
         $this->upd_datetime = $upd_datetime;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of addres
+     */ 
+    public function getAddres()
+    {
+        return $this->addres;
+    }
+
+    /**
+     * Set the value of addres
+     *
+     * @return  self
+     */ 
+    public function setAddres($addres)
+    {
+        $this->addres = $addres;
 
         return $this;
     }

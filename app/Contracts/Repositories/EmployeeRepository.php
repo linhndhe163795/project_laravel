@@ -10,5 +10,6 @@ interface EmployeeRepository extends BaseRepository
     public function checkLogin($email,$password);
     public function getEmployeeByEmail($email);
     public function searchEmployee($data = []);
+    public function getEmployeeById($id);        
 }
 

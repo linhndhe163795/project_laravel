@@ -21,5 +21,11 @@ class EloquentPositionRepository extends EloquentBaseRepository implements Posit
     {
         return $this->model->paginate($items);
     }
+    public function getPositionIdByName($name)
+    {
+        $positionId = $this->model->select('id')
+        ->where('name','=',$name)->first();
+        return $positionId->id;
+    }
 
 }
