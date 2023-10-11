@@ -15,9 +15,7 @@ use app\Helpers\Constant;
                 Team <div class="dropdown">
                     <select class="form-select" name="teamName" aria-label="Team Name">
                         @foreach ($teamName as $o)
-                        <option {{ ($o->name == old('teamName',empty( $request->teamName) ? '' :  $request->teamName)) ? 'selected' : '' }}>
-                            {{ $o->name }}
-                        </option>
+                        <option value="{{ $o->name }}" {{ isset($request->teamName) && $request->teamName == $o->name ? 'selected' : '' }}>{{ $o->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -31,16 +29,34 @@ use app\Helpers\Constant;
                 </div>
                 <button type="submit" class="btn btn-primary" name="search" value="search">Search</button>
                 <button type="button" onclick="ResetInput()" class="btn btn-secondary">Reset</button>
+                <a href="{{route('employee.export')}}"><button type="button" style="float:right;" name="export" class="btn btn-primary">Export CSV</button></a>
         </div>
     </div>
     </form>
+
     <table style="width: 1100px" class="  table table-center bg-white mb-0">
         <thead>
             <tr>
-                <th style="width: 200px;">ID</th>
-                <th>Team</th>
-                <th>Name</th>
-                <th>Email</th>
+                <th style="width: 200px;">ID
+                    <i class='fa fa-arrow-up'></i>
+                    <i class='fa fa-arrow-down text-muted'></i>
+                </th>
+                <th>Team
+                    <i class='fa fa-arrow-up'></i>
+                    <i class='fa fa-arrow-down text-muted'></i>
+                </th>
+                <th>Name
+                    <span wire:click="sortBy('name')">
+                        <i class='fa fa-arrow-up'></i>
+                        <i class='fa fa-arrow-down text-muted'></i>
+                    </span>
+                </th>
+                <th>Email
+                    <span wire:click="sortBy()">
+                        <i class='fa fa-arrow-up'></i>
+                        <i class='fa fa-arrow-down text-muted'></i>
+                    </span>
+                </th>
                 <td style="width: 200px;">Action</td>
             </tr>
         </thead>
@@ -55,7 +71,7 @@ use app\Helpers\Constant;
             <td>{{ $item->email }}</td>
             <td>
                 <a href="{{ route('employee.edit', ['id' => $item->id]) }}"><button class="btn btn-primary">Edit</button></a>
-                <form style="display: inline;" id="form_delete_{{ $item->id }}" action="{{ route('team.delete', ['id' => $item->id]) }}" method="GET">
+                <form style="display: inline;" id="form_delete_{{ $item->id }}" action="{{ route('employee.delete', ['id' => $item->id]) }}" method="GET">
                     <input type="hidden" class="form-control" name="id" readonly value="{{ $item->id }}">
                     <input type="hidden" class="form-control" name="del_flag" readonly value="{{Constant::DEL_FLAG_BAN}}">
                     <button type="button" class="btn btn-danger" data-id="{{ $item->id }}" onclick="Delete_team(this)">Delete</button>
@@ -85,6 +101,17 @@ use app\Helpers\Constant;
     </tr>
 </div>
 </body>
+<script>
+    function Delete_team(button) {
+        var id = button.getAttribute("data-id");
+        console.log(id);
+        var confirmDelete = confirm('Do you want to remove this team id = ' + id);
+        if (confirmDelete) {
+            // document.getElementById('id').value = id;
+            document.getElementById('form_delete_' + id).submit();
+        }
+    }
+</script>
 
 </html>
 

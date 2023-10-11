@@ -32,10 +32,10 @@ use App\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Avatar *</label>
-                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ $request['avatar'] }}" alt="Hình ảnh">
+                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{empty($request['avatar']) ? $employeeDetails->avatar : $request['avatar'] }}" alt="Hình ảnh">
             </div>
 
-            <input type="text" readonly class="form-control" name="avatar_image" value="{{$request['avatar']}}">
+            <input type="hidden" readonly class="form-control" name="avatar_image" value="{{empty($request['avatar']) ? $employeeDetails->avatar : $request['avatar'] }}">
             
             <div class="form-group">
                 <label for="id">Team * </label>
@@ -47,7 +47,7 @@ use App\Helpers\Constant;
             </div>
             <div class="form-group">
                 <label for="id">Password *</label>
-                <input type="text" readonly class="form-control" name="password" value="{{$request['request']['password']}}">
+                <input type="password" readonly class="form-control" name="password" id='password' value="{{$request['request']['password']}}">
             </div>
             <div class="form-group">
                 <label for="id">First Name *</label>
@@ -109,5 +109,11 @@ use App\Helpers\Constant;
 
 </div>
 </body>
-
+<script>
+     function goBack() {
+        var passowrd = document.getElementById('password');
+        passowrd.values = '{{ $request->password}}';
+        history.back();
+    }
+</script>
 </html>

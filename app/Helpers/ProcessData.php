@@ -24,7 +24,7 @@ class ProcessData{
         $this->positionRepository = $positionRepository;
     }
 
-    public function processEmployeeData($data)
+    public function processEmployeeDataUpdate($data)
     {
         $team_id = $this->teamRepository->getTeamIdByName($data['team_id']);
         $typeOfWorkId = $this->typeOfWorkRepository->getTypeOfWorkIdbyName($data['type_of_work']);
@@ -41,6 +41,17 @@ class ProcessData{
         $data['type_of_work'] = $typeOfWorkId;
         $data['gender'] = ($data['gender'] === 'Male') ? Constant::MALE : Constant::FEMALE;
         $data['status'] = ($data['status'] === 'On Working') ? Constant::WORKING : Constant::RETIRED;
+
+
+        
+        return $data;
+    }
+    public function processData($data){
+        $data['team_name'] = $this->teamRepository->find($data->input('team_name'));
+        $data['type_of_work'] = $this->typeOfWorkRepository->find($data->input('type_of_work'));
+        $data['positions'] = $this->positionRepository->find($data->input('position'));
+        $data['request'] = $data;
+        $data['avatar'] = FileHelper::storeImage($data, 'public/images');
 
         return $data;
     }

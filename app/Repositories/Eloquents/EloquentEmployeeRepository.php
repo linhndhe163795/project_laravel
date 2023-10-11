@@ -51,7 +51,7 @@ class EloquentEmployeeRepository extends EloquentBaseRepository implements Emplo
             'm_teams.name',
             DB::raw('CONCAT(m_employees.first_name, " ", m_employees.last_name) AS fullname'), 
             'm_employees.email'
-        )->join('m_teams', 'm_teams.id', '=', 'm_employees.team_id');
+        )->join('m_teams', 'm_teams.id', '=', 'm_employees.team_id')-> where('m_employees.del_flag','=',Constant::DEL_FLAG_ACTIVE);
 
         if (!empty($data['name'])) {
             $query->where(DB::raw('CONCAT(m_employees.first_name, " ", m_employees.last_name)'), 'like', '%' . $data['name'] . '%');

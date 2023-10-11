@@ -105,5 +105,9 @@ use App\Helpers\Constant;
 
 </div>
 </body>
-
+<script>
+     function goBack() {
+        history.back();
+    }
+</script>
 </html>

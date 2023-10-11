@@ -6,14 +6,14 @@ use App\Contracts\Repositories\EmployeeRepository;
 use App\Contracts\Repositories\PositionRepository;
 use App\Contracts\Repositories\TeamRepository;
 use App\Contracts\Repositories\TypeOfWorkRepository;
+use App\Exports\EmployeeExport;
 use App\Http\Requests\ValidationRequest;
 use Illuminate\Http\Request;
 use App\Helpers\Constant;
 use App\Helpers\FileHelper;
 use App\Helpers\ProcessData;
-use App\Helpers\ProcessData\processEmployeeData;
-use App\Jobs\SendEmail;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 // use App\Helpers\ProcessData;
 
@@ -68,7 +68,7 @@ class EmployeeManagementController extends Controller
     {
         if ($validationRequest->has('save')) {
             $data = $validationRequest->all();
-            $processedData = $this->processData->processEmployeeData($data);
+            $processedData = $this->processData->processEmployeeDataUpdate($data);
             $teamName = $this->teamRepository->getTeamName();
             $this->employeeRepository->create($processedData);
 
@@ -86,13 +86,7 @@ class EmployeeManagementController extends Controller
             return view('clients.employee.search_employee', compact('message', 'teamName'));
         } else {
             $currentDateTime = date('Y-m-d H:i:s');
-            $request = [
-                'team_name' => $this->teamRepository->find($validationRequest->input('team_name')),
-                'type_of_work' => $this->typeOfWorkRepository->find($validationRequest->input('type_of_work')),
-                'positions' => $this->positionRepository->find($validationRequest->input('position')),
-                'request' => $validationRequest,
-                'avatar' => FileHelper::storeImage($validationRequest, 'public/images')
-            ];
+            $request  = $this->processData->processData($validationRequest);
             return view('clients.employee.create_employee_confirm', compact('request', 'currentDateTime'));
         }
     }
@@ -106,27 +100,49 @@ class EmployeeManagementController extends Controller
     }
     public function editConfirm(ValidationRequest $validationRequest)
     {
+        $position = $this->positionRepository->all();
         $teamName = $this->teamRepository->getTeamName();
+        $typeOfWork = $this->typeOfWorkRepository->all();
         if ($validationRequest->has('save')) {
             $id = $validationRequest->input('id');
             $data = $validationRequest->all();
-            // dd($data);
-            $processedData = $this->processData->processEmployeeData($data);
-            // dd($processedData);
+            $processedData = $this->processData->processEmployeeDataUpdate($data);
+            $emailEmployee = $this->employeeRepository->find($id);
+            $newEmail = $validationRequest->input('email');
             $this->employeeRepository->update($id, $processedData);
+            if ($validationRequest->input($data) != $emailEmployee->email) {
+                FileHelper::SendMailToUser($processedData, $newEmail);
+            }
             $message = Constant::MESSAGE_UPDATE_EMPLOYEE;
             return view('clients.employee.search_employee', compact('message', 'teamName'));
-        } else {
-            $currentDateTime = date('Y-m-d H:i:s');
-            $request = [
-                'team_name' => $this->teamRepository->find($validationRequest->input('team_name')),
-                'type_of_work' => $this->typeOfWorkRepository->find($validationRequest->input('type_of_work')),
-                'positions' => $this->positionRepository->find($validationRequest->input('position')),
-                'request' => $validationRequest,
-                'avatar' => FileHelper::storeImage($validationRequest, 'public/images')
-            ];
-            // dd($request);
-            return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime'));
         }
+        if ($validationRequest->has('back')) {
+            $request = $validationRequest->all();
+            // dd($request);
+            return view('clients.employee.edit_employee', compact('request', 'teamName', 'position', 'typeOfWork'));
+        } else {
+            $id = $validationRequest->input('id');
+            $employeeDetails = $this->employeeRepository->getEmployeeById($id);
+            $currentDateTime = date('Y-m-d H:i:s');
+            $request  = $this->processData->processData($validationRequest);
+            return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime', 'employeeDetails'));
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $data = $request->all();
+        $teamName = $this->teamRepository->getTeamName();
+        $this->employeeRepository->update($request->input('id'), $data);
+        $message = Constant::MESSAGE_DELETE_EMPLOYEE;
+        return view('clients.employee.search_employee', compact('message', 'teamName'));
+    }
+
+    public function export(Request $request)
+    {
+        // echo "123";
+        // $data = $request->all();
+        // dd($data);
+        return Excel::download(new EmployeeExport($this->employeeRepository, $request), 'employee-csv.csv');
     }
 }
