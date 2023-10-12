@@ -87,12 +87,17 @@ use app\Helpers\Constant;
             <div class="form-group">
                 <label for="id">Gender *</label>
                 &ensp; &ensp;
+                <!-- male = 1 ; female = 2  -->
                 <label class="radio-inline">
-                    <input name='gender' type="radio" value='{{Constant::MALE}}' @if($employeeDetails->gender==Constant::MALE || old('gender') == Constant::MALE ) checked @endif> Male &ensp; &ensp;
+                    <input name='gender' type="radio" value='{{Constant::MALE}}' {{  (($employeeDetails->gender)==Constant::MALE || old('gender') == Constant::MALE) ? "checked" : '' }}> Male&ensp; &ensp;
                 </label>
                 <label class="radio-inline">
-                    <input name='gender' type="radio" value='{{Constant::FEMALE}}' @if($employeeDetails->gender==Constant::FEMALE || old('gender') == Constant::FEMALE ) checked @endif> Female
+                    <input name='gender' type="radio" value='{{Constant::FEMALE}}'{{ (($employeeDetails->gender)==Constant::FEMALE || old('gender' ) == Constant::FEMALE) ? "checked" : ''}}>Female
+                    <input name='status' type="radio" value='{{Constant::WORKING}}' @if(($employeeDetails->status)==Constant::WORKING || old('status') == Constant::WORKING) checked @endif> On Working&ensp;&ensp;
+
                 </label>
+                <input name='gender' type="text" value="{{empty(old('gender')) ? 'null' : old('gender')}}">
+
             </div>
             @if ($errors->has('gender'))<p class="alert alert-danger">{{ $errors->first('gender') }}</p>@endif
 
@@ -142,6 +147,7 @@ use app\Helpers\Constant;
                 <label class="radio-inline">
                     <input name='status' type="radio" value='{{Constant::RETIRED}}' @if(($employeeDetails->status)==Constant::RETIRED || old('status') == Constant::RETIRED) checked @endif> Retired
                 </label>
+                <input name='gender' type="text" value="{{empty(old('status')) ? '' : old('status')}}">
             </div>
             @if ($errors->has('status'))<p class="alert alert-danger">{{ $errors->first('status') }}</p>@endif
         </div>

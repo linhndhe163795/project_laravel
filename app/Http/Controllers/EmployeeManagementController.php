@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Constant;
 use App\Helpers\FileHelper;
 use App\Helpers\ProcessData;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -37,6 +38,8 @@ class EmployeeManagementController extends Controller
         $this->positionRepository = $positionRepository;
         $this->typeOfWorkRepository = $typeOfWorkRepository;
         $this->processData = $processData;
+        // $this->middleware('auth');
+       
     }
 
     public function home()
@@ -50,6 +53,9 @@ class EmployeeManagementController extends Controller
             $teamName = $this->teamRepository->getTeamName();
             $listEmployee = $this->employeeRepository->searchEmployee($data);
             return view('clients.employee.search_employee', compact('listEmployee', 'teamName', 'request'));
+        }
+        if ($request->has('export')) {
+            return Excel::download(new EmployeeExport($this->employeeRepository, $request), 'employee-csv.csv');
         } else {
             $teamName = $this->teamRepository->getTeamName();
             return view('clients.employee.search_employee', compact('teamName'));
@@ -96,6 +102,7 @@ class EmployeeManagementController extends Controller
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();
         $employeeDetails = $this->employeeRepository->getEmployeeById($id);
+        // dd($employeeDetails);
         return view('clients.employee.edit_employee', compact('position', 'typeOfWork', 'teamName', 'employeeDetails'));
     }
     public function editConfirm(ValidationRequest $validationRequest)
@@ -118,13 +125,13 @@ class EmployeeManagementController extends Controller
         }
         if ($validationRequest->has('back')) {
             $request = $validationRequest->all();
-            // dd($request);
             return view('clients.employee.edit_employee', compact('request', 'teamName', 'position', 'typeOfWork'));
         } else {
             $id = $validationRequest->input('id');
             $employeeDetails = $this->employeeRepository->getEmployeeById($id);
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
+            dd($employeeDetails);
             return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime', 'employeeDetails'));
         }
     }
@@ -136,13 +143,5 @@ class EmployeeManagementController extends Controller
         $this->employeeRepository->update($request->input('id'), $data);
         $message = Constant::MESSAGE_DELETE_EMPLOYEE;
         return view('clients.employee.search_employee', compact('message', 'teamName'));
-    }
-
-    public function export(Request $request)
-    {
-        // echo "123";
-        // $data = $request->all();
-        // dd($data);
-        return Excel::download(new EmployeeExport($this->employeeRepository, $request), 'employee-csv.csv');
     }
 }

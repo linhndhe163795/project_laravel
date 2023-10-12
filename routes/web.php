@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'management'], function () {
     Route::get("/login", [LoginController::class, 'login'])->name('login');
     Route::post("/login", [LoginController::class, 'loginPost'])->name("login.post");
+    Route::get("/logout", [LoginController::class, 'logout'])->name("logout");
     Route::get("/home", [LoginController::class, 'home'])->name('home');
     Route::group(['prefix' => 'team'],function(){
         Route::get("/search/{name?}", [TeamManagementController::class, 'search'])->name('team.search');
@@ -36,7 +37,6 @@ Route::group(['prefix' => 'management'], function () {
         Route::post("edit_confirm",[EmployeeManagementController::class,'editconfirm'])->name('employee.edit_confirm');
         Route::get("back/{id}",[EmployeeManagementController::class,'back'])->name('employee.back');
         Route::get("/delete/{id}",[EmployeeManagementController::class,'delete'])->name('employee.delete');
-        Route::get("/export",[EmployeeManagementController::class,'export'])->name('employee.export');
     });
 });
 

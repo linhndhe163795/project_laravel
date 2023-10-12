@@ -29,7 +29,8 @@ use app\Helpers\Constant;
                 </div>
                 <button type="submit" class="btn btn-primary" name="search" value="search">Search</button>
                 <button type="button" onclick="ResetInput()" class="btn btn-secondary">Reset</button>
-                <a href="{{route('employee.export')}}"><button type="button" style="float:right;" name="export" class="btn btn-primary">Export CSV</button></a>
+               <button type="submit" style="float:right;" name="export" class="btn btn-primary">Export CSV</button>
+
         </div>
     </div>
     </form>
@@ -99,6 +100,7 @@ use app\Helpers\Constant;
         </td>
         </td>
     </tr>
+
 </div>
 </body>
 <script>
