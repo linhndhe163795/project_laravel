@@ -72,7 +72,7 @@ use app\Helpers\Constant;
         <td colspan="4">
             &nbsp;
             <div class="d-flex justify-content-right">
-                {{ empty($listEmployee) ? "" :$listEmployee->appends(request()->input())->links()}}
+                {{ empty($listEmployee) ? "" :$listEmployee->appends(Request::except('page'))->links()}}
             </div>
         </td>
         <td colspan="3">
