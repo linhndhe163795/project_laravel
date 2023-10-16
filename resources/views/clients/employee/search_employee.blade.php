@@ -38,26 +38,10 @@ use app\Helpers\Constant;
     <table style="width: 1100px" class="  table table-center bg-white mb-0">
         <thead>
             <tr>
-                <th style="width: 200px;">ID
-                    <i class='fa fa-arrow-up'></i>
-                    <i class='fa fa-arrow-down text-muted'></i>
-                </th>
-                <th>Team
-                    <i class='fa fa-arrow-up'></i>
-                    <i class='fa fa-arrow-down text-muted'></i>
-                </th>
-                <th>Name
-                    <span wire:click="sortBy('name')">
-                        <i class='fa fa-arrow-up'></i>
-                        <i class='fa fa-arrow-down text-muted'></i>
-                    </span>
-                </th>
-                <th>Email
-                    <span wire:click="sortBy()">
-                        <i class='fa fa-arrow-up'></i>
-                        <i class='fa fa-arrow-down text-muted'></i>
-                    </span>
-                </th>
+                <th style="width: 200px;"> @sortablelink('ID')</th>
+                <th>@sortablelink('Team')</th>
+                <th>@sortablelink('Name')</th>
+                <th>@sortablelink('Email')</th>
                 <td style="width: 200px;">Action</td>
             </tr>
         </thead>
@@ -67,8 +51,8 @@ use app\Helpers\Constant;
         @foreach ($listEmployee as $item)
         <tbody>
             <td>{{ $item->id }}</td>
-            <td>{{ $item->name }}</td>
-            <td>{{ $item->fullname }}</td>
+            <td>{{ $item->Team }}</td>
+            <td>{{ $item->Name }}</td>
             <td>{{ $item->email }}</td>
             <td>
                 <a href="{{ route('employee.edit', ['id' => $item->id]) }}"><button class="btn btn-primary">Edit</button></a>
@@ -103,17 +87,8 @@ use app\Helpers\Constant;
 
 </div>
 </body>
-<script>
-    function Delete_team(button) {
-        var id = button.getAttribute("data-id");
-        console.log(id);
-        var confirmDelete = confirm('Do you want to remove this team id = ' + id);
-        if (confirmDelete) {
-            // document.getElementById('id').value = id;
-            document.getElementById('form_delete_' + id).submit();
-        }
-    }
-</script>
+
+<script src = {{asset ('js/employee/employee.js') }}></script>
 
 </html>
 

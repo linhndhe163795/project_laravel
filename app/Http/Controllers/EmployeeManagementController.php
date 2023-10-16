@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Constant;
 use App\Helpers\FileHelper;
 use App\Helpers\ProcessData;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -50,6 +51,9 @@ class EmployeeManagementController extends Controller
             $data = $request->all();
             $teamName = $this->teamRepository->getTeamName();
             $listEmployee = $this->employeeRepository->searchEmployee($data);
+            
+            // dd($data);
+            
             return view('clients.employee.search_employee', compact('listEmployee', 'teamName', 'request'));
         }
         if ($request->has('export')) {

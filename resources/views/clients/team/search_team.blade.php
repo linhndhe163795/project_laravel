@@ -74,20 +74,5 @@ use app\Helpers\Constant;
 <div style="color: red; text-align: center; ">{{empty($message) ? '' : $message}}</div>
 </div>
 </body>
-<script>
-    function ResetInput() {
-        document.getElementById('name').value = '';
-    }
-
-    function Delete_team(button) {
-        var id = button.getAttribute("data-id");
-        console.log(id);
-        var confirmDelete = confirm('Do you want to remove this team id = ' + id);
-        if (confirmDelete) {
-            // document.getElementById('id').value = id;
-            document.getElementById('form_delete_' + id).submit();
-        }
-    }
-</script>
-
+<script src="{{asset('js/team/team.js')}}"></script>
 </html>

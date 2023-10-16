@@ -1,5 +1,4 @@
 @include('clients.header')
-
 <?php
 
 use App\Helpers\Constant;

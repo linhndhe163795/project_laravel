@@ -6,11 +6,12 @@ use App\Contracts\Repositories\EmployeeRepository;
 use App\Helpers\Constant;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
+use Kyslik\ColumnSortable\Sortable;
 
 class EloquentEmployeeRepository extends EloquentBaseRepository implements EmployeeRepository
 {
     protected $model;
-    
+    use Sortable;
     public function __construct(Employee $model)
     {
         $this->model = $model;
@@ -45,11 +46,11 @@ class EloquentEmployeeRepository extends EloquentBaseRepository implements Emplo
         return $employee;
     }
     public function searchEmployee($data = [])
-    {    
+    {   
         $query = $this->model->select(
             'm_employees.id',
-            'm_teams.name',
-            DB::raw('CONCAT(m_employees.first_name, " ", m_employees.last_name) AS fullname'), 
+            DB::raw('(m_teams.name) as Team'),
+            DB::raw('CONCAT(m_employees.first_name, " ", m_employees.last_name) AS Name'), 
             'm_employees.email'
         )->join('m_teams', 'm_teams.id', '=', 'm_employees.team_id')-> where('m_employees.del_flag','=',Constant::DEL_FLAG_ACTIVE);
 
@@ -65,8 +66,12 @@ class EloquentEmployeeRepository extends EloquentBaseRepository implements Emplo
             $query->where('m_teams.name', 'like', '%' . $data['teamName'] . '%');
         }
 
-        $listEmployee = $query->paginate(Constant::PAGING);
-
+        if(isset($data['sort']) && isset($data['direction'])){
+            $listEmployee = $query->orderBy($data['sort'],$data['direction'])->paginate(Constant::PAGING);
+        }else{
+            $listEmployee = $query->paginate(Constant::PAGING);
+        }
+        // dd($listEmployee);  
         return $listEmployee;
     }
     public function getEmployeeById($id){

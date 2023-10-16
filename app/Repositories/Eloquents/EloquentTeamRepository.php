@@ -4,10 +4,11 @@ namespace App\Repositories\Eloquents;
 use App\Contracts\Repositories\TeamRepository;
 use App\Models\Team;
 use App\Helpers\Constant;
+use Kyslik\ColumnSortable\Sortable;
 
 class EloquentTeamRepository extends EloquentBaseRepository implements TeamRepository
 {   
-    
+    use Sortable;
     protected $model;
 
     public function __construct(Team $model)

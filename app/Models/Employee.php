@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Models;
-
+use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 class Employee extends Authenticatable 
 {
     use HasFactory;
-
+    use Sortable;
     protected $table = 'm_employees';
 
     protected $fillable = [
