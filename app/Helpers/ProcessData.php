@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use Carbon\Carbon;
@@ -8,7 +9,8 @@ use App\Contracts\Repositories\TypeOfWorkRepository;
 use App\Helpers\Constant;
 
 
-class ProcessData{
+class ProcessData
+{
     protected $teamRepository;
     protected $typeOfWorkRepository;
     protected $positionRepository;
@@ -17,7 +19,7 @@ class ProcessData{
         TeamRepository $teamRepository,
         TypeOfWorkRepository $typeOfWorkRepository,
         PositionRepository $positionRepository,
-       
+
     ) {
         $this->teamRepository = $teamRepository;
         $this->typeOfWorkRepository = $typeOfWorkRepository;
@@ -32,21 +34,21 @@ class ProcessData{
 
         $data['avatar'] = $data['avatar_image'];
         unset($data['avatar_image']);
+        $password = bcrypt($data['password']);
+        $data['password'] = $password;
 
         $birthday = Carbon::createFromFormat('d/m/Y', $data['birthday']);
         $data['birthday'] = $birthday->format('Y-m-d');
-
         $data['team_id'] = $team_id;
         $data['position'] = $positionId;
         $data['type_of_work'] = $typeOfWorkId;
         $data['gender'] = ($data['gender'] === 'Male') ? Constant::MALE : Constant::FEMALE;
         $data['status'] = ($data['status'] === 'On Working') ? Constant::WORKING : Constant::RETIRED;
 
-
-        
         return $data;
     }
-    public function processData($data){
+    public function processData($data)
+    {
         $data['team_name'] = $this->teamRepository->find($data->input('team_name'));
         $data['type_of_work'] = $this->typeOfWorkRepository->find($data->input('type_of_work'));
         $data['positions'] = $this->positionRepository->find($data->input('position'));

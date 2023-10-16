@@ -21,7 +21,7 @@ use app\Helpers\Constant;
     }
 </style>
 <div class="container">
-    <form action="{{route('employee.edit_confirm')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('employee.create_confirm')}}" method="POST" enctype="multipart/form-data">
         <div class="border">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
 

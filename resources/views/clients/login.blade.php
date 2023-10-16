@@ -19,6 +19,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container login-container">
         <div class="row justify-content-center">
@@ -32,22 +33,20 @@
                             <div class="form-group">
                                 <label for="username">User Name</label>
                                 <input type="email" class="form-control" id="username" name="email" value="">
-                                <div style="color: red">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password">
-                                    <div style="color: red">
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="btn btn-primary" name="submit">Login</button>
-                                    </div>
-                                    @if(session('error'))
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                    @endif
-                                    <div style="color: red">{{!empty($error)?$error:""}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" value="">
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary" name="submit">Login</button>
+                            </div>
+                            @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                            @endif
+                            <div style="color: red">{{!empty($error)?$error:""}}</div>
                         </form>
                     </div>
                 </div>

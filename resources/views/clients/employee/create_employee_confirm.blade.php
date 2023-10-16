@@ -31,8 +31,6 @@ use App\Helpers\Constant;
                 <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ $request['avatar'] }}" alt="Hình ảnh">
             </div>
 
-            <input type="text" readonly class="form-control" name="avatar_image" value="{{$request['avatar']}}">
-
             <div class="form-group">
                 <label for="id">Team * </label>
                 <input type="text" readonly class="form-control" name="team_id" value="{{$request['team_name']->name}}">

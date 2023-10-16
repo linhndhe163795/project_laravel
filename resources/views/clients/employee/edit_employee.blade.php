@@ -93,7 +93,6 @@ use app\Helpers\Constant;
                 </label>
                 <label class="radio-inline">
                     <input name='gender' type="radio" value='{{Constant::FEMALE}}'{{ (($employeeDetails->gender)==Constant::FEMALE || old('gender' ) == Constant::FEMALE) ? "checked" : ''}}>Female
-                    <input name='status' type="radio" value='{{Constant::WORKING}}' @if(($employeeDetails->status)==Constant::WORKING || old('status') == Constant::WORKING) checked @endif> On Working&ensp;&ensp;
 
                 </label>
                 <input name='gender' type="text" value="{{empty(old('gender')) ? 'null' : old('gender')}}">

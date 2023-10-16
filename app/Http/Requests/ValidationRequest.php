@@ -65,7 +65,7 @@ class ValidationRequest extends FormRequest
         if ($this->has('avatar')) {
             $rules['avatar'] = ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
         }
-
+        
         return $rules;
     }
 }

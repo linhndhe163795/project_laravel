@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
 use App\Contracts\Repositories\EmployeeRepository;
+use App\Helpers\Constant;
+use App\Http\Middleware\Authenticate;
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -27,19 +31,15 @@ class LoginController extends Controller
     public function loginPost(Request $request)
     {
         $email = $request->input('email');
-        $password = $request->input('password');
-        $check = $this->employeeRespoitory->checkLogin($email, $password);
-
-
-        if ($check == true) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'del_flag' => Constant::DEL_FLAG_ACTIVE])) {
             $profile = $this->employeeRespoitory->getEmployeeByEmail($email);
             Session::put("profile", [[
                 'id' => $profile->id,
                 'email' => $profile->email
             ]]);
-
-            return redirect(route('home'))->with('email', $email);
+            return redirect(route('home'));
         } else {
+            echo 'false';
             return redirect(route('login'))->with('error', 'Incorrect Input');
         }
     }

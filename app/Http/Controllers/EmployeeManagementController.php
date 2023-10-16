@@ -31,15 +31,13 @@ class EmployeeManagementController extends Controller
         PositionRepository $positionRepository,
         TypeOfWorkRepository $typeOfWorkRepository,
         ProcessData $processData
-
     ) {
+        $this->middleware('auth');
         $this->employeeRepository = $employeeRepository;
         $this->teamRepository = $teamRepository;
         $this->positionRepository = $positionRepository;
         $this->typeOfWorkRepository = $typeOfWorkRepository;
         $this->processData = $processData;
-        // $this->middleware('auth');
-       
     }
 
     public function home()
@@ -93,6 +91,7 @@ class EmployeeManagementController extends Controller
         } else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
+            // dd($request);
             return view('clients.employee.create_employee_confirm', compact('request', 'currentDateTime'));
         }
     }
@@ -102,7 +101,10 @@ class EmployeeManagementController extends Controller
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();
         $employeeDetails = $this->employeeRepository->getEmployeeById($id);
-        // dd($employeeDetails);
+        if ($employeeDetails == null) {
+            $message = 'Do not exist employee ';
+            return view('clients.employee.search_employee', compact('message', 'teamName', 'message'));
+        }
         return view('clients.employee.edit_employee', compact('position', 'typeOfWork', 'teamName', 'employeeDetails'));
     }
     public function editConfirm(ValidationRequest $validationRequest)
@@ -131,7 +133,7 @@ class EmployeeManagementController extends Controller
             $employeeDetails = $this->employeeRepository->getEmployeeById($id);
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
-            dd($employeeDetails);
+            // dd($employeeDetails);
             return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime', 'employeeDetails'));
         }
     }

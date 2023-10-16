@@ -14,6 +14,7 @@ class TeamManagementController extends Controller
     protected $teamRepository;
     public function __construct(TeamRepository $teamRepository)
     {
+        $this->middleware('auth');
         $this->teamRepository = $teamRepository;
     }
 
@@ -26,7 +27,13 @@ class TeamManagementController extends Controller
 
     public function edit(Request $request)
     {
+        $name = $request->input('name');
+        $webName = $this->teamRepository->searchTeamName($name);
         $teamTitle = $this->teamRepository->find($request->id);
+        if($teamTitle == null){
+            $message = 'Do not exist employee !! ';
+            return  view("clients.team.search_team", compact('webName', 'name','request','message'));
+        }
         return view("clients.team.edit_team", compact(['teamTitle']));
     }
 
