@@ -41,13 +41,15 @@
                             <div>
                                 <button type="submit" class="btn btn-primary" name="submit">Login</button>
                             </div>
-                            @if(session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
+                            <div style="margin-top: 20px;" class="form-group">
+                                @if(session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
                             </div>
                             @endif
-                            <div style="color: red">{{!empty($error)?$error:""}}</div>
                         </form>
+                        
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 
+use App\Jobs\SendEmailJob;
 use Illuminate\Support\Facades\Mail;
 
 class FileHelper
@@ -13,18 +14,15 @@ class FileHelper
             return $imageName; 
         }
         return null;
-        
     }
     public static function SendMailToUser($request,$email){
-
-        Mail::to($email)->send(new \App\Mail\SendMail(
-            [
-                'emails' => $email
-            ],
-            [
-                'first_name' => $request['first_name'],
-                'last_name' => $request['last_name']
-            ]
-        ));
+        dispatch(new SendEmailJob([
+            'email' => $email,
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+        ]));
     }
+
+
+   
 }

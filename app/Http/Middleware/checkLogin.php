@@ -19,14 +19,8 @@ class checkLogin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            $user = Auth::user();
-            if ($user->del_flag == Constant::DEL_FLAG_ACTIVE) {
-                return $next($request);
-            } else {
-                Auth::logout();
-                return redirect()->route('login');
-            }
+            return $next($request);
         } else
-            return redirect('login');
+        return redirect('login');
     }
 }

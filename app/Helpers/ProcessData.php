@@ -28,15 +28,17 @@ class ProcessData
 
     public function processEmployeeDataUpdate($data)
     {
+       
         $team_id = $this->teamRepository->getTeamIdByName($data['team_id']);
         $typeOfWorkId = $this->typeOfWorkRepository->getTypeOfWorkIdbyName($data['type_of_work']);
         $positionId = $this->positionRepository->getPositionIdByName($data['position']);
-
-        $data['avatar'] = $data['avatar_image'];
-        unset($data['avatar_image']);
+        $arrayImage = explode("\\" ,$data['avatar_image_hidden']);
+        $ImageName = end($arrayImage);
+        $data['avatar'] = $ImageName;
+        unset($data['avatar_image_hidden']);
         $password = bcrypt($data['password']);
         $data['password'] = $password;
-
+        // dd($data);
         $birthday = Carbon::createFromFormat('d/m/Y', $data['birthday']);
         $data['birthday'] = $birthday->format('Y-m-d');
         $data['team_id'] = $team_id;
@@ -44,17 +46,21 @@ class ProcessData
         $data['type_of_work'] = $typeOfWorkId;
         $data['gender'] = ($data['gender'] === 'Male') ? Constant::MALE : Constant::FEMALE;
         $data['status'] = ($data['status'] === 'On Working') ? Constant::WORKING : Constant::RETIRED;
-
         return $data;
     }
     public function processData($data)
     {
+        // dd($data);
+        
         $data['team_name'] = $this->teamRepository->find($data->input('team_name'));
         $data['type_of_work'] = $this->typeOfWorkRepository->find($data->input('type_of_work'));
         $data['positions'] = $this->positionRepository->find($data->input('position'));
         $data['request'] = $data;
         $data['avatar'] = FileHelper::storeImage($data, 'public/images');
-
+        $arrayImage = explode("\\" ,$data['avatar_image_hidden']);
+        $ImageName = end($arrayImage);
+        $data['avatar_image_hidden']  = $ImageName;
+        // dd($data);
         return $data;
     }
 }

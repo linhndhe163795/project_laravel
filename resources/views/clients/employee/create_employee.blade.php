@@ -27,7 +27,9 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Avatar *</label>
-                <input type="file" class="form-control" name="avatar_image" value="{{old('avatar')}}">
+                <input type="file"   id="avatar_image" class="form-control" name="avatar_image" value="{{old('avatar')}}">
+
+                <input type="hidden" id="avatar_image_hidden" name="avatar_image_hidden" value="{{ old('avatar_image_hidden') }}">
             </div>
             @if ($errors->has('avatar'))<p class="alert alert-danger">{{ $errors->first('avatar') }}</p>@endif
 
@@ -45,25 +47,25 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Email *</label>
-                <input type="text" class="form-control" name="email" placeholder="Input Email" value="{{ old('email') }}">
+                <input id="email" type="text" class="form-control" name="email" placeholder="Input Email" value="{{ old('email') }}">
             </div>
             @if ($errors->has('email'))<p class="alert alert-danger">{{ $errors->first('email') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">First Name *</label>
-                <input type="text" class="form-control" name="first_name" placeholder="Input First Name" value="{{ old('first_name') }}">
+                <input id = "first_name" type="text" class="form-control" name="first_name" placeholder="Input First Name" value="{{ old('first_name') }}">
             </div>
             @if ($errors->has('first_name'))<p class="alert alert-danger">{{ $errors->first('first_name') }}</p>@endif        
 
             <div class="form-group">
                 <label for="id">Last Name *</label>
-                <input type="text" class="form-control" name="last_name" placeholder="Input Team Name" value="{{ old('last_name') }}">
+                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Input Team Name" value="{{ old('last_name') }}">
             </div>
             @if ($errors->has('last_name'))<p class="alert alert-danger">{{ $errors->first('last_name') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Password *</label>
-                <input type="password"  class="form-control" name="password" placeholder="Input Password" value="{{old('password')}}">
+                <input id="password" type="password"  class="form-control" name="password" placeholder="Input Password" value="{{old('password')}}">
             </div>
             @if ($errors->has('password'))<p class="alert alert-danger">{{ $errors->first('password') }}</p>@endif
 
@@ -87,13 +89,13 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Address *</label>
-                <input type="text" class="form-control" name='address' placeholder="Input Address" value=" {{old('address') }}">
+                <input id = "address" type="text" class="form-control" name='address' placeholder="Input Address" value=" {{old('address') }}">
             </div>
             @if ($errors->has('address'))<p class="alert alert-danger">{{ $errors->first('address') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Salary *</label>
-                <input type="text" class="form-control" name='salary' placeholder="Input Team Name" value=" {{old('salary') }}">
+                <input id= "salary" type="text" class="form-control" name='salary' placeholder="Input Team Name" value=" {{old('salary') }}">
             </div>
             @if ($errors->has('salary'))<p class="alert alert-danger">{{ $errors->first('salary') }}</p>@endif
 
@@ -134,5 +136,5 @@ use app\Helpers\Constant;
 
 </div>
 </body>
-
+<script src = {{asset ('js/employee/employee.js') }}></script>
 </html>

@@ -14,6 +14,7 @@ use app\Helpers\Constant;
             <form action="{{route('employee.search')}}">
                 Team <div class="dropdown">
                     <select class="form-select" name="teamName" aria-label="Team Name">
+                        <option value= "" selected >Choose Team</option>
                         @foreach ($teamName as $o)
                         <option value="{{ $o->name }}" {{ isset($request->teamName) && $request->teamName == $o->name ? 'selected' : '' }}>{{ $o->name }}</option>
                         @endforeach
@@ -27,6 +28,9 @@ use app\Helpers\Constant;
                     <label for="id">Email:</label>
                     <input type="text" class="form-control" id='email' name="email" placeholder="Input Email" value="{{empty($request->email) ? '' : $request->email }}">
                 </div>
+                <input type="hidden" name="page" value="{{ $listEmployee->currentPage() ?? 'null' }}">
+
+
                 <button type="submit" class="btn btn-primary" name="search" value="search">Search</button>
                 <button type="button" onclick="ResetInput()" class="btn btn-secondary">Reset</button>
                <button type="submit" style="float:right;" name="export" class="btn btn-primary">Export CSV</button>
@@ -42,14 +46,15 @@ use app\Helpers\Constant;
                 <th>@sortablelink('Team')</th>
                 <th>@sortablelink('Name')</th>
                 <th>@sortablelink('Email')</th>
-                <td style="width: 200px;">Action</td>
+                <th style="width: 200px;">Action</th>
             </tr>
         </thead>
+        <tbody>
         @if (empty($listEmployee))
-        <td colspan="3">No result</td>
+        <td colspan="5" style="color: red; text-align: center;">No result found !!!</td>
         @else
         @foreach ($listEmployee as $item)
-        <tbody>
+       
             <td>{{ $item->id }}</td>
             <td>{{ $item->Team }}</td>
             <td>{{ $item->Name }}</td>
@@ -66,7 +71,7 @@ use app\Helpers\Constant;
         @endforeach
         @endif
     </table>
-    <div style="color: red; text-align: center;">{{empty($message) ? "" : $message}}</div>
+    <div style="color: red; text-align: center; font-size: 30;">{{empty($message) ? "" : $message}}</div>
     <tr>
         <td>
         <td colspan="4">

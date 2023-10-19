@@ -25,36 +25,27 @@ use app\Helpers\Constant;
         <div class="border">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-            <!-- <input type="text" name="avatar" value="{{$employeeDetails->avatar }}"> -->
             <div class="form-group">
                 <label for="id">ID *</label>
                 <input type="text" readonly class="form-control" name="id" value="{{  $employeeDetails->id }}">
-
             </div>
-
             <div class="form-group">
                 <label for="id">Avatar *</label>
-                <input type="file" class="form-control" name="avatar_image" value="{{$employeeDetails->avatar}}">
-            </div>
+                <input type="file" id="avatar_image" accept="image/*" class="form-control" name="avatar_image" value="{{$employeeDetails->avatar}}">
 
+                <input type="hidden" id="avatar_image_hidden" name="avatar_image_hidden" value="{{ old('avatar_image_hidden') }}">
+            </div>
             <div class="form-group">
                 <label for="id">Image *</label>
-                @if(isset($previousImagePath))
-                <img src="{{ asset('storage/' . $previousImagePath) }}" alt="Previous Image">
-                @else
-                <img style="width:150px; height: 150px;" src="/storage/images/{{$employeeDetails->avatar}}">
-                @endif
-                <!-- <img style="width:150px; height: 150px;" src="/storage/images/{{$employeeDetails->avatar}}"> -->
+                <img style="width:250px; height:250px;" src="/storage/images/{{ (old('avatar_image_hidden')) ?  old('avatar_image_hidden') : $employeeDetails->avatar }}">
             </div>
-
             @if ($errors->has('avatar'))<p class="alert alert-danger">{{ $errors->first('avatar') }}</p>@endif
-
             <div class="form-group">
                 <label for="id">Team * </label>
                 <select class="form-control" name='team_name'>
                     @foreach($teamName as $o)
                     <option value='{{ $o->id }}' @if($employeeDetails->name == $o->name || old('team_name') == $o->id) selected @endif>{{ $o->name }}</option>
-                        {{$o->name}}
+                    {{$o->name}}
                     </option>
                     @endforeach
                 </select>
@@ -62,59 +53,55 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Email *</label>
-                <input type="text" class="form-control" name="email" placeholder="Input Email" value="{{ empty(old('email')) ?  $employeeDetails->email : old('email') }}">
+                <input id="email"type="text" class="form-control" name="email" placeholder="Input Email" value="{{ empty(old('email')) ?  $employeeDetails->email : old('email') }}">
             </div>
             @if ($errors->has('email'))<p class="alert alert-danger">{{ $errors->first('email') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">First Name *</label>
-                <input type="text" class="form-control" name="first_name" placeholder="Input First Name" value="{{empty(old('first_name')) ?  $employeeDetails->first_name : old('first_name') }}">
+                <input id = "first_name" type="text" class="form-control" name="first_name" placeholder="Input First Name" value="{{empty(old('first_name')) ?  $employeeDetails->first_name : old('first_name') }}">
             </div>
             @if ($errors->has('first_name'))<p class="alert alert-danger">{{ $errors->first('first_name') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Last Name *</label>
-                <input type="text" class="form-control" name="last_name" placeholder="Input Team Name" value="{{empty(old('last_name')) ?  $employeeDetails->last_name : old('last_name') }}">
+                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Input Team Name" value="{{empty(old('last_name')) ?  $employeeDetails->last_name : old('last_name') }}">
             </div>
             @if ($errors->has('last_name'))<p class="alert alert-danger">{{ $errors->first('last_name') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Password *</label>
-                <input type="password" class="form-control" id='password' name="password" placeholder="Input Password" value="{{empty(old('password')) ?  $employeeDetails->password : old('password')}}">
+                <input id="password" type="password" class="form-control" id='password' name="password" placeholder="Input Password" value="{{empty(old('password')) ?  $employeeDetails->password : old('password')}}">
             </div>
             @if ($errors->has('password'))<p class="alert alert-danger">{{ $errors->first('password') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Gender *</label>
                 &ensp; &ensp;
-                <!-- male = 1 ; female = 2  -->
                 <label class="radio-inline">
                     <input name='gender' type="radio" value='{{Constant::MALE}}' {{  (($employeeDetails->gender)==Constant::MALE || old('gender') == Constant::MALE) ? "checked" : '' }}> Male&ensp; &ensp;
                 </label>
                 <label class="radio-inline">
-                    <input name='gender' type="radio" value='{{Constant::FEMALE}}'{{ (($employeeDetails->gender)==Constant::FEMALE || old('gender' ) == Constant::FEMALE) ? "checked" : ''}}>Female
-
+                    <input name='gender' type="radio" value='{{Constant::FEMALE}}' {{ (($employeeDetails->gender)==Constant::FEMALE || old('gender' ) == Constant::FEMALE) ? "checked" : ''}}>Female
                 </label>
-                <input name='gender' type="text" value="{{empty(old('gender')) ? 'null' : old('gender')}}">
-
             </div>
             @if ($errors->has('gender'))<p class="alert alert-danger">{{ $errors->first('gender') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Birthday *</label>
-                <input type="date" name='birthday' class="form-control" value="{{empty(old('birthday')) ?  $employeeDetails->birthday : old('birthday')}}">
+                <input  type="date" name='birthday' class="form-control" value="{{empty(old('birthday')) ?  $employeeDetails->birthday : old('birthday')}}">
             </div>
             @if ($errors->has('birthday'))<p class="alert alert-danger">{{ $errors->first('birthday') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Address *</label>
-                <input type="text" class="form-control" name='address' placeholder="Input Address" value="{{empty(old('address')) ?  $employeeDetails->address : old('address')}}">
+                <input id = "address" type="text" class="form-control" name='address' placeholder="Input Address" value="{{empty(old('address')) ?  $employeeDetails->address : old('address')}}">
             </div>
             @if ($errors->has('address'))<p class="alert alert-danger">{{ $errors->first('address') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Salary *</label>
-                <input type="text" class="form-control" name='salary' placeholder="Input Team Name" value="{{empty(old('salary')) ?  $employeeDetails->salary : old('salary')}}">
+                <input id = "salary" type="text" class="form-control" name='salary' placeholder="Input Team Name" value="{{empty(old('salary')) ?  $employeeDetails->salary : old('salary')}}">
             </div>
             @if ($errors->has('salary'))<p class="alert alert-danger">{{ $errors->first('salary') }}</p>@endif
 
@@ -146,7 +133,6 @@ use app\Helpers\Constant;
                 <label class="radio-inline">
                     <input name='status' type="radio" value='{{Constant::RETIRED}}' @if(($employeeDetails->status)==Constant::RETIRED || old('status') == Constant::RETIRED) checked @endif> Retired
                 </label>
-                <input name='gender' type="text" value="{{empty(old('status')) ? '' : old('status')}}">
             </div>
             @if ($errors->has('status'))<p class="alert alert-danger">{{ $errors->first('status') }}</p>@endif
         </div>
@@ -158,8 +144,6 @@ use app\Helpers\Constant;
 
 </div>
 </body>
-<script>
-
-</script>
+<script src = {{asset ('js/employee/employee.js') }}></script>
 
 </html>

@@ -32,10 +32,10 @@ use App\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Avatar *</label>
-                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{empty($request['avatar']) ? $employeeDetails->avatar : $request['avatar'] }}" alt="Hình ảnh">
+                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{empty($request['avatar_image_hidden']) ? $employeeDetails->avatar : $request['avatar_image_hidden'] }}" alt="Hình ảnh">
             </div>
 
-            <input type="hidden" readonly class="form-control" name="avatar_image" value="{{empty($request['avatar']) ? $employeeDetails->avatar : $request['avatar'] }}">
+            <input type="hidden" readonly class="form-control" name="avatar_image_hidden" value="{{empty($request['avatar_image_hidden']) ? $employeeDetails->avatar : $request['avatar_image_hidden'] }}">
             
             <div class="form-group">
                 <label for="id">Team * </label>

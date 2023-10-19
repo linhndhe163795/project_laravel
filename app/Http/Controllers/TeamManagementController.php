@@ -7,7 +7,6 @@ use App\Contracts\Repositories\TeamRepository;
 use App\Helpers\Constant;
 use App\Http\Requests\ValidationRequest;
 use Illuminate\Http\Request;
-use App\Helpers\ConstantHepler;
 
 class TeamManagementController extends Controller
 {
@@ -20,9 +19,15 @@ class TeamManagementController extends Controller
 
     public function search(Request $request)
     {
-        $name = $request->input('name');
-        $webName = $this->teamRepository->searchTeamName($name);
-        return  view("clients.team.search_team", compact('webName', 'name','request'));
+        if ($request->has('search')) {
+            $name = $request->input('name');
+            $data = $request->all();
+            $webName = $this->teamRepository->searchTeamName($name,$data);
+            return  view("clients.team.search_team", compact('webName', 'name','request'));
+        }else{
+            return  view("clients.team.search_team");
+        }
+       
     }
 
     public function edit(Request $request)
@@ -31,7 +36,7 @@ class TeamManagementController extends Controller
         $webName = $this->teamRepository->searchTeamName($name);
         $teamTitle = $this->teamRepository->find($request->id);
         if($teamTitle == null){
-            $message = 'Do not exist employee !! ';
+            $message = 'Do not exist team !!! ';
             return  view("clients.team.search_team", compact('webName', 'name','request','message'));
         }
         return view("clients.team.edit_team", compact(['teamTitle']));
@@ -59,10 +64,8 @@ class TeamManagementController extends Controller
 
     public function createConfirm(ValidationRequest $request)
     {
-        // dd($request->input("name"));
         if ($request->has('save')) {
             $data = $request->all();
-            // dd($data);
             $this->teamRepository->create($data);
             $message = Constant::MESSAGE_CREATE_TEAM;
             return view('clients.team.search_team', compact('message'));
@@ -74,8 +77,13 @@ class TeamManagementController extends Controller
     public function delete(Request $request)
     {
         $data = $request->all();
+        $listTeam = $this->teamRepository->find($request->input('id'));
+
+        if($listTeam == null){
+            $message = "Do not exsit team !!!";
+            return view('clients.team.search_team', compact('message'));
+        }
         $this->teamRepository->update($request->input('id'), $data);
-        // dd($request->input('id'));
         $message = Constant::MESSAGE_DELETE_TEAM;
         return view('clients.team.search_team', compact('message'));
     }

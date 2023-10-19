@@ -39,7 +39,6 @@ class LoginController extends Controller
             ]]);
             return redirect(route('home'));
         } else {
-            echo 'false';
             return redirect(route('login'))->with('error', 'Incorrect Input');
         }
     }

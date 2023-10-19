@@ -26,13 +26,13 @@ use app\Helpers\Constant;
 <table style="width: 1100px" class="  table table-center bg-white mb-0">
     <thead>
         <tr>
-            <th style="width: 200px;">ID</th>
-            <th>Name</th>
-            <td style="width: 200px;">Action</td>
+            <th style="width: 200px;"> @sortablelink('ID')</th>
+            <th> @sortablelink('Name')</th>
+            <th style="width: 200px;">Action</th>
         </tr>
     </thead>
     @if (empty($webName))
-    <td colspan="3">No result</td>
+    <td colspan="3" style="text-align: center; color: red;">No result found !!!</td>
     @else
     @foreach ($webName as $item)
     <tbody>
@@ -58,7 +58,7 @@ use app\Helpers\Constant;
     <td colspan="4">
         &nbsp;
         <div class="d-flex justify-content-right">
-            {{ empty($webName) ? "" : $webName->appends(request()->input())->links()  }}
+            {{ empty($webName) ? "" : $webName->appends(Request::except('page'))->links()  }}
         </div>
     </td>
     <td colspan="3" >
@@ -71,7 +71,7 @@ use app\Helpers\Constant;
     </td>
     </td>
 </tr>
-<div style="color: red; text-align: center; ">{{empty($message) ? '' : $message}}</div>
+<div style="color: red; text-align: center; font-size: 30; ">{{empty($message) ? '' : $message}}</div>
 </div>
 </body>
 <script src="{{asset('js/team/team.js')}}"></script>

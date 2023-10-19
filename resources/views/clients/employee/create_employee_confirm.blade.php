@@ -27,9 +27,9 @@ use App\Helpers\Constant;
             <div class="form-group">
                 <label for="id">Avatar *</label>
 
-                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ $request['avatar'] }}" alt="Hình ảnh">
+                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ $request['avatar_image_hidden'] }}" alt="Hình ảnh">
             </div>
-
+            <input type="hidden" readonly class="form-control" name="avatar_image_hidden" value="{{$request['avatar_image_hidden'] }}">
             <div class="form-group">
                 <label for="id">Team * </label>
                 <input type="text" readonly class="form-control" name="team_id" value="{{$request['team_name']->name}}">
@@ -40,7 +40,7 @@ use App\Helpers\Constant;
             </div>
             <div class="form-group">
                 <label for="id">Password *</label>
-                <input type="text" readonly class="form-control" name="password" value="{{$request['request']['password']}}">
+                <input type="password" readonly class="form-control" name="password" value="{{$request['request']['password']}}">
             </div>
             <div class="form-group">
                 <label for="id">First Name *</label>
@@ -102,9 +102,5 @@ use App\Helpers\Constant;
 
 </div>
 </body>
-<script>
-     function goBack() {
-        history.back();
-    }
-</script>
+<script src = {{asset ('js/employee/employee.js') }}></script>
 </html>

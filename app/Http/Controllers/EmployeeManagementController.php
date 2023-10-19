@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Constant;
 use App\Helpers\FileHelper;
 use App\Helpers\ProcessData;
-use App\Models\Employee;
+use App\Jobs\SendEmailJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -51,16 +51,17 @@ class EmployeeManagementController extends Controller
             $data = $request->all();
             $teamName = $this->teamRepository->getTeamName();
             $listEmployee = $this->employeeRepository->searchEmployee($data);
-            
-            // dd($data);
-            
             return view('clients.employee.search_employee', compact('listEmployee', 'teamName', 'request'));
         }
         if ($request->has('export')) {
+            $data = $request->all();
+            // dd($data);  
             return Excel::download(new EmployeeExport($this->employeeRepository, $request), 'employee-csv.csv');
         } else {
+            $data = $request->all();
             $teamName = $this->teamRepository->getTeamName();
-            return view('clients.employee.search_employee', compact('teamName'));
+            $listEmployee = $this->employeeRepository->searchEmployee($data);
+            return view('clients.employee.search_employee', compact('teamName','listEmployee'));
         }
     }
 
@@ -79,23 +80,19 @@ class EmployeeManagementController extends Controller
             $processedData = $this->processData->processEmployeeDataUpdate($data);
             $teamName = $this->teamRepository->getTeamName();
             $this->employeeRepository->create($processedData);
+            
+            $email = $processedData['email'];
+            dispatch(new SendEmailJob([
+                'email' => $email,
+                'first_name' => $processedData['first_name'],
+                'last_name' => $processedData['last_name'],
+            ]));
 
-            $emails = $processedData['email'];
-            Mail::to($emails)->send(new \App\Mail\SendMail(
-                [
-                    'emails' => $emails
-                ],
-                [
-                    'first_name' => $processedData['first_name'],
-                    'last_name' => $processedData['last_name']
-                ]
-            ));
             $message = Constant::MESSAGE_CREATE_EMPLOYEE;
             return view('clients.employee.search_employee', compact('message', 'teamName'));
         } else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
-            // dd($request);
             return view('clients.employee.create_employee_confirm', compact('request', 'currentDateTime'));
         }
     }
@@ -106,7 +103,7 @@ class EmployeeManagementController extends Controller
         $typeOfWork = $this->typeOfWorkRepository->all();
         $employeeDetails = $this->employeeRepository->getEmployeeById($id);
         if ($employeeDetails == null) {
-            $message = 'Do not exist employee ';
+            $message = 'Do not exist employee !!! ';
             return view('clients.employee.search_employee', compact('message', 'teamName', 'message'));
         }
         return view('clients.employee.edit_employee', compact('position', 'typeOfWork', 'teamName', 'employeeDetails'));
@@ -123,7 +120,7 @@ class EmployeeManagementController extends Controller
             $emailEmployee = $this->employeeRepository->find($id);
             $newEmail = $validationRequest->input('email');
             $this->employeeRepository->update($id, $processedData);
-            if ($validationRequest->input($data) != $emailEmployee->email) {
+            if ($validationRequest->input('email') !== $emailEmployee->email) {
                 FileHelper::SendMailToUser($processedData, $newEmail);
             }
             $message = Constant::MESSAGE_UPDATE_EMPLOYEE;
@@ -137,15 +134,20 @@ class EmployeeManagementController extends Controller
             $employeeDetails = $this->employeeRepository->getEmployeeById($id);
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
-            // dd($employeeDetails);
             return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime', 'employeeDetails'));
         }
     }
 
     public function delete(Request $request)
     {
+        $listEmployee = $this->employeeRepository->find($request->input('id'));
+        
         $data = $request->all();
         $teamName = $this->teamRepository->getTeamName();
+        if($listEmployee == null){
+            $message = 'Do not exist employee !!! ';
+            return view('clients.employee.search_employee', compact('message', 'teamName'));
+        }
         $this->employeeRepository->update($request->input('id'), $data);
         $message = Constant::MESSAGE_DELETE_EMPLOYEE;
         return view('clients.employee.search_employee', compact('message', 'teamName'));

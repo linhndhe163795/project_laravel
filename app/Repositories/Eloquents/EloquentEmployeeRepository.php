@@ -52,7 +52,8 @@ class EloquentEmployeeRepository extends EloquentBaseRepository implements Emplo
             DB::raw('(m_teams.name) as Team'),
             DB::raw('CONCAT(m_employees.first_name, " ", m_employees.last_name) AS Name'), 
             'm_employees.email'
-        )->join('m_teams', 'm_teams.id', '=', 'm_employees.team_id')-> where('m_employees.del_flag','=',Constant::DEL_FLAG_ACTIVE);
+        )->join('m_teams', 'm_teams.id', '=', 'm_employees.team_id')-> where('m_employees.del_flag','=',Constant::DEL_FLAG_ACTIVE)
+        ->where('m_teams.del_flag' , '=', Constant::DEL_FLAG_ACTIVE);
 
         if (!empty($data['name'])) {
             $query->where(DB::raw('CONCAT(m_employees.first_name, " ", m_employees.last_name)'), 'like', '%' . $data['name'] . '%');
@@ -71,7 +72,6 @@ class EloquentEmployeeRepository extends EloquentBaseRepository implements Emplo
         }else{
             $listEmployee = $query->paginate(Constant::PAGING);
         }
-        // dd($listEmployee);  
         return $listEmployee;
     }
     public function getEmployeeById($id){
@@ -82,7 +82,6 @@ class EloquentEmployeeRepository extends EloquentBaseRepository implements Emplo
         ->join('m_type_of_work','m_type_of_work.id','=','m_employees.type_of_work')
         ->join('m_position', 'm_position.id','=','m_employees.position')
         ->where('m_employees.id','=',$id)->first();
-        // dd($employee->email);
         return $employee;
     }
 }
