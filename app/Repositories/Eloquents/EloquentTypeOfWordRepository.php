@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquents;
 
 use App\Contracts\Repositories\TypeOfWorkRepository;
+use App\Helpers\Constant;
 use App\Models\Type_Of_Work;
 
 class EloquentTypeOfWordRepository extends EloquentBaseRepository implements TypeOfWorkRepository
@@ -31,7 +32,7 @@ class EloquentTypeOfWordRepository extends EloquentBaseRepository implements Typ
     public function getTypeOfWorkIdbyName($name)
     {
         $typeOfWorkId = $this->model->select('id')
-            ->where('type_of_work', '=', $name)->first();
+            ->where('type_of_work', '=', $name);
         return $typeOfWorkId->id;
     }
 }

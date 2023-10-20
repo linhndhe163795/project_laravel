@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     protected $employeeRespoitory;
     public function __construct(EmployeeRepository $employeeRepository)
-    {
+    {   
         $this->employeeRespoitory = $employeeRepository;
     }
 

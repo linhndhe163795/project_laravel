@@ -21,7 +21,7 @@ function ResetInput() {
     if (document.getElementById('first_name') != null) {
         document.getElementById('first_name').value = '';
     }
-    
+
 }
 function Delete_team(button) {
     var id = button.getAttribute("data-id");
@@ -31,7 +31,8 @@ function Delete_team(button) {
         // document.getElementById('id').value = id;
         document.getElementById('form_delete_' + id).submit();
     }
-    document.getElementById('avatar_image').addEventListener('change', function() {
+}
+    document.getElementById('avatar_image').addEventListener('change', function () {
         const fileInput = this;
         const hiddenInput = document.getElementById('avatar_image_hidden');
         if (fileInput.files.length > 0) {
@@ -39,10 +40,9 @@ function Delete_team(button) {
             var imageName = file.pop();
             hiddenInput.value = imageName;
         } else {
-            hiddenInput.value = ''; 
+            hiddenInput.value = '';
         }
     });
-}
 function goBack() {
     history.back();
 }

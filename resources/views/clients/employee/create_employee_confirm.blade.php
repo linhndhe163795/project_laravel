@@ -21,7 +21,7 @@ use App\Helpers\Constant;
     }
 </style>
 <div class="container">
-    <form action="{{route('employee.create_confirm')}}" method="POST">
+    <form id = "create_employee" action="{{route('employee.create_confirm')}}" method="POST">
         <div class="border">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
@@ -97,7 +97,7 @@ use App\Helpers\Constant;
 
         </div>
         <button type="submit" class="btn btn-primary" name="save">Save</button>
-        <button type="button" onclick="goBack()" class="btn btn-secondary">Back</button>
+        <button type="button" onclick = "goBack()" class="btn btn-secondary">Back</button>
     </form>
 
 </div>

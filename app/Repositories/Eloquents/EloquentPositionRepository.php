@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\Eloquents;
 use App\Contracts\Repositories\PositionRepository;
+use App\Helpers\Constant;
 use App\Models\Position;
 
 class EloquentPositionRepository extends EloquentBaseRepository implements PositionRepository{
@@ -24,7 +25,7 @@ class EloquentPositionRepository extends EloquentBaseRepository implements Posit
     public function getPositionIdByName($name)
     {
         $positionId = $this->model->select('id')
-        ->where('name','=',$name)->first();
+        ->where('name','=',$name);
         return $positionId->id;
     }
 

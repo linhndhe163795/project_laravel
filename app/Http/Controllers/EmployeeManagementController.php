@@ -13,11 +13,8 @@ use App\Helpers\Constant;
 use App\Helpers\FileHelper;
 use App\Helpers\ProcessData;
 use App\Jobs\SendEmailJob;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
-// use App\Helpers\ProcessData;
 
 class EmployeeManagementController extends Controller
 {
@@ -55,7 +52,6 @@ class EmployeeManagementController extends Controller
         }
         if ($request->has('export')) {
             $data = $request->all();
-            // dd($data);  
             return Excel::download(new EmployeeExport($this->employeeRepository, $request), 'employee-csv.csv');
         } else {
             $data = $request->all();
@@ -75,6 +71,7 @@ class EmployeeManagementController extends Controller
 
     public function createConfirm(ValidationRequest $validationRequest)
     {
+        $data = $validationRequest->all();
         if ($validationRequest->has('save')) {
             $data = $validationRequest->all();
             $processedData = $this->processData->processEmployeeDataUpdate($data);
@@ -87,9 +84,9 @@ class EmployeeManagementController extends Controller
                 'first_name' => $processedData['first_name'],
                 'last_name' => $processedData['last_name'],
             ]));
-
+            $listEmployee = $this->employeeRepository->searchEmployee($data);
             $message = Constant::MESSAGE_CREATE_EMPLOYEE;
-            return view('clients.employee.search_employee', compact('message', 'teamName'));
+            return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         } else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
@@ -113,9 +110,10 @@ class EmployeeManagementController extends Controller
         $position = $this->positionRepository->all();
         $teamName = $this->teamRepository->getTeamName();
         $typeOfWork = $this->typeOfWorkRepository->all();
+        $data = $validationRequest->all();
         if ($validationRequest->has('save')) {
             $id = $validationRequest->input('id');
-            $data = $validationRequest->all();
+           
             $processedData = $this->processData->processEmployeeDataUpdate($data);
             $emailEmployee = $this->employeeRepository->find($id);
             $newEmail = $validationRequest->input('email');
@@ -123,8 +121,9 @@ class EmployeeManagementController extends Controller
             if ($validationRequest->input('email') !== $emailEmployee->email) {
                 FileHelper::SendMailToUser($processedData, $newEmail);
             }
+            $listEmployee = $this->employeeRepository->searchEmployee($data);
             $message = Constant::MESSAGE_UPDATE_EMPLOYEE;
-            return view('clients.employee.search_employee', compact('message', 'teamName'));
+            return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         }
         if ($validationRequest->has('back')) {
             $request = $validationRequest->all();
@@ -140,16 +139,16 @@ class EmployeeManagementController extends Controller
 
     public function delete(Request $request)
     {
-        $listEmployee = $this->employeeRepository->find($request->input('id'));
-        
+        $Employee = $this->employeeRepository->find($request->input('id'));
+        $listEmployee = $this->employeeRepository->searchEmployee($request->all());
         $data = $request->all();
         $teamName = $this->teamRepository->getTeamName();
-        if($listEmployee == null){
+        if($Employee == null){
             $message = 'Do not exist employee !!! ';
-            return view('clients.employee.search_employee', compact('message', 'teamName'));
+            return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         }
         $this->employeeRepository->update($request->input('id'), $data);
         $message = Constant::MESSAGE_DELETE_EMPLOYEE;
-        return view('clients.employee.search_employee', compact('message', 'teamName'));
+        return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
     }
 }
