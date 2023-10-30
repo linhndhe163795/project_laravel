@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('m_type_of_work', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type_of_word',128)->unique();
+            $table->string('type_of_work',128)->unique();
         });
     }
 

@@ -13,6 +13,7 @@ use App\Helpers\Constant;
 use App\Helpers\FileHelper;
 use App\Helpers\ProcessData;
 use App\Jobs\SendEmailJob;
+use Illuminate\Contracts\Session\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -30,7 +31,7 @@ class EmployeeManagementController extends Controller
         TypeOfWorkRepository $typeOfWorkRepository,
         ProcessData $processData
     ) {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         $this->employeeRepository = $employeeRepository;
         $this->teamRepository = $teamRepository;
         $this->positionRepository = $positionRepository;
@@ -63,6 +64,7 @@ class EmployeeManagementController extends Controller
 
     public function create(Request $request)
     {
+
         $teamName = $this->teamRepository->getTeamName();
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();
@@ -71,14 +73,17 @@ class EmployeeManagementController extends Controller
 
     public function createConfirm(ValidationRequest $validationRequest)
     {
+        $teamName = $this->teamRepository->getTeamName();
+        $position = $this->positionRepository->all();
+        $typeOfWork = $this->typeOfWorkRepository->all();
         $data = $validationRequest->all();
         if ($validationRequest->has('save')) {
             $data = $validationRequest->all();
-            $processedData = $this->processData->processEmployeeDataUpdate($data);
+            $processedData = $this->processData->processEmployeeDataUpdate($data,0);
             $teamName = $this->teamRepository->getTeamName();
             $this->employeeRepository->create($processedData);
-            
             $email = $processedData['email'];
+            
             dispatch(new SendEmailJob([
                 'email' => $email,
                 'first_name' => $processedData['first_name'],
@@ -86,10 +91,13 @@ class EmployeeManagementController extends Controller
             ]));
             $listEmployee = $this->employeeRepository->searchEmployee($data);
             $message = Constant::MESSAGE_CREATE_EMPLOYEE;
+            // session()->forget('avatar_image');
             return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         } else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
+            // dd($request['request']['gender']);    
+            // ($request->avatar_image_hidden === null) ? session()->put('avatar_image','false') : session()->put('avatar_image','true');
             return view('clients.employee.create_employee_confirm', compact('request', 'currentDateTime'));
         }
     }
@@ -99,6 +107,7 @@ class EmployeeManagementController extends Controller
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();
         $employeeDetails = $this->employeeRepository->getEmployeeById($id);
+        // dd($employeeDetails);
         if ($employeeDetails == null) {
             $message = 'Do not exist employee !!! ';
             return view('clients.employee.search_employee', compact('message', 'teamName', 'message'));
@@ -107,16 +116,18 @@ class EmployeeManagementController extends Controller
     }
     public function editConfirm(ValidationRequest $validationRequest)
     {
+        $id = $validationRequest->input('id');
+        $employeeDetails = $this->employeeRepository->getEmployeeById($id);
+        $employeePassword = $employeeDetails->password;
         $position = $this->positionRepository->all();
         $teamName = $this->teamRepository->getTeamName();
         $typeOfWork = $this->typeOfWorkRepository->all();
         $data = $validationRequest->all();
         if ($validationRequest->has('save')) {
-            $id = $validationRequest->input('id');
-           
-            $processedData = $this->processData->processEmployeeDataUpdate($data);
+            $processedData = $this->processData->processEmployeeDataUpdate($data,$employeePassword);
             $emailEmployee = $this->employeeRepository->find($id);
             $newEmail = $validationRequest->input('email');
+            // dd($processedData);
             $this->employeeRepository->update($id, $processedData);
             if ($validationRequest->input('email') !== $emailEmployee->email) {
                 FileHelper::SendMailToUser($processedData, $newEmail);
@@ -125,14 +136,10 @@ class EmployeeManagementController extends Controller
             $message = Constant::MESSAGE_UPDATE_EMPLOYEE;
             return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         }
-        if ($validationRequest->has('back')) {
-            $request = $validationRequest->all();
-            return view('clients.employee.edit_employee', compact('request', 'teamName', 'position', 'typeOfWork'));
-        } else {
-            $id = $validationRequest->input('id');
-            $employeeDetails = $this->employeeRepository->getEmployeeById($id);
+       else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
+            // dd($request);
             return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime', 'employeeDetails'));
         }
     }

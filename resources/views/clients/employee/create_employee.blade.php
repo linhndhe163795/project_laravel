@@ -29,11 +29,10 @@ use app\Helpers\Constant;
                 <label for="id">Avatar *</label>
                 <input type="file"   id="avatar_image" class="form-control" name="avatar_image" value="{{old('avatar')}}">
 
-                <input type="hidden" id="avatar_image_hidden" name="avatar_image_hidden" value="{{ old('avatar_image_hidden') }}">
+                <input type="hidden" id="avatar_image_hidden" name="avatar_image_hidden" value="{{old('avatar_image_hidden')}}">
             </div>
-            @if ($errors->has('avatar'))<p class="alert alert-danger">{{ $errors->first('avatar') }}</p>@endif
-
-            
+                    @if(!empty($message)) <p class="alert alert-danger">{{ $message}}</p>@endif
+                    @if ($errors->has('avatar_image'))<p class="alert alert-danger">{{ $errors->first('avatar_image') }}</p>@endif 
 
 
             <div class="form-group">
@@ -47,19 +46,19 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Email *</label>
-                <input id="email" type="text" class="form-control" name="email" placeholder="Input Email" value="{{ old('email') }}">
+                <input id="email" type="text" class="form-control" name="email" placeholder="Input Email" value="{{old('email')}}">
             </div>
             @if ($errors->has('email'))<p class="alert alert-danger">{{ $errors->first('email') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">First Name *</label>
-                <input id = "first_name" type="text" class="form-control" name="first_name" placeholder="Input First Name" value="{{ old('first_name') }}">
+                <input id = "first_name" type="text" class="form-control" name="first_name" placeholder="Input First Name" value="{{old('first_name')}}">
             </div>
             @if ($errors->has('first_name'))<p class="alert alert-danger">{{ $errors->first('first_name') }}</p>@endif        
 
             <div class="form-group">
                 <label for="id">Last Name *</label>
-                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Input Team Name" value="{{ old('last_name') }}">
+                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Input Team Name" value="{{old('last_name')}}">
             </div>
             @if ($errors->has('last_name'))<p class="alert alert-danger">{{ $errors->first('last_name') }}</p>@endif
 
@@ -73,7 +72,8 @@ use app\Helpers\Constant;
                 <label for="id">Gender *</label>
                 &ensp; &ensp;
                 <label class="radio-inline">
-                    <input name='gender' type="radio" value='{{Constant::MALE}}' @if(old('gender')==Constant::MALE) checked @endif> Male &ensp; &ensp;
+                    <input name='gender' type="radio" checked value='{{Constant::MALE}}' @if(old('gender')==Constant::MALE) checked @endif> Male &ensp; &ensp;
+                    <!-- <input type="hidden" name='gender' class="form-control" value=""> -->
                 </label>
                 <label class="radio-inline">
                     <input name='gender' type="radio" value='{{Constant::FEMALE}}' @if(old('gender')==Constant::FEMALE) checked @endif> Female
@@ -89,13 +89,13 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Address *</label>
-                <input id = "address" type="text" class="form-control" name='address' placeholder="Input Address" value=" {{old('address') }}">
+                <input id = "address" type="text" class="form-control" name='address' placeholder="Input Address" value="{{old('address')}}">
             </div>
             @if ($errors->has('address'))<p class="alert alert-danger">{{ $errors->first('address') }}</p>@endif
 
             <div class="form-group">
                 <label for="id">Salary *</label>
-                <input id= "salary" type="text" class="form-control" name='salary' placeholder="Input Team Name" value=" {{old('salary') }}">
+                <input id= "salary" type="text" class="form-control" name='salary' placeholder="Input Team Name" value="{{old('salary')}}">
             </div>
             @if ($errors->has('salary'))<p class="alert alert-danger">{{ $errors->first('salary') }}</p>@endif
 
@@ -120,7 +120,7 @@ use app\Helpers\Constant;
             <div class="form-group">
                 <label for="id">Status *</label>&ensp;&ensp;
                 <label class="radio-inline">
-                    <input name='status' type="radio" value='{{Constant::WORKING}}' @if(old('status')==Constant::WORKING) checked @endif> On Working&ensp;&ensp;
+                    <input name='status' type="radio" checked value='{{Constant::WORKING}}' @if(old('status')==Constant::WORKING) checked @endif> On Working&ensp;&ensp;
                 </label>
                 <label class="radio-inline">
                     <input name='status' type="radio" value='{{Constant::RETIRED}}' @if(old('status')==Constant::RETIRED) checked @endif> Retired
@@ -136,5 +136,6 @@ use app\Helpers\Constant;
 
 </div>
 </body>
-<script src = {{asset ('js/employee/employee.js') }}></script>
+<script src = "{{asset ('employee/employee.js') }}"></script>
+<script src="/js/employee/employee.js"></script>
 </html>

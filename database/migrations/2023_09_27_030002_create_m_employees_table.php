@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('salary');
             $table->integer('position');
             $table->char('status', 1);
-            $table->int('type_of_work');
+            $table->integer('type_of_work');
             $table->integer('ins_id');
             $table->integer('upd_id');
             $table->dateTime('ins_datetime');

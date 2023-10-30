@@ -32,7 +32,7 @@ use App\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Avatar *</label>
-                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{empty($request['avatar_image_hidden']) ? $employeeDetails->avatar : $request['avatar_image_hidden'] }}" alt="Hình ảnh">
+                <img style="height: 200px;  width: 200px;" src="/storage/images/{{empty($request['avatar_image_hidden']) ? $employeeDetails->avatar : $request['avatar_image_hidden'] }}" >
             </div>
 
             <input type="hidden" readonly class="form-control" name="avatar_image_hidden" value="{{empty($request['avatar_image_hidden']) ? $employeeDetails->avatar : $request['avatar_image_hidden'] }}">
@@ -109,11 +109,7 @@ use App\Helpers\Constant;
 
 </div>
 </body>
-<script>
-     function goBack() {
-        var passowrd = document.getElementById('password');
-        passowrd.values = '{{ $request->password}}';
-        history.back();
-    }
-</script>
+<script src = "{{asset ('employee/employee.js') }}"></script>
+<script src="/js/employee/employee.js"></script>
+
 </html>

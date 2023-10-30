@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../../../css/header.css">
 
 @include('clients.header')
+<div class="container">
 <form action="{{route('team.edit_confirm')}}" method="POST">
     <div class="form-group">
         <label for="id">ID:</label>
@@ -17,7 +18,7 @@
     <button type="button" onclick="ResetInput()" class="btn btn-secondary">Reset</button>
     <a href="{{route('team.edit_confirm')}}"><button type="submit" name="confirm" class="btn btn-primary">Confirm</button></a>
 </form>
-
+</div>
 
 </body>
 <script>

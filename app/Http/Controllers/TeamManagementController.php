@@ -69,7 +69,7 @@ class TeamManagementController extends Controller
             $this->teamRepository->create($data);
             $message = Constant::MESSAGE_CREATE_TEAM;
             return view('clients.team.search_team', compact('message'));
-        } else {
+        } if($request->has('confirm')){
             $currentDateTime = date('Y-m-d H:i:s');
             return view('clients.team.create_confirm_team', compact('request','currentDateTime'));
         }

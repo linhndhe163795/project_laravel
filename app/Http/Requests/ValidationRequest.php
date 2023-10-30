@@ -28,18 +28,19 @@ class ValidationRequest extends FormRequest
         $id = $this->input('id');
 
         $rules = [];
+        ($this->input('avatar_image_hidden') === null) ? session()->put('avatar_image', 'false') : session()->put('avatar_image', 'true');
 
         if ($this->has('name')) {
-            $rules['name'] = ['max:128', Rule::unique('m_teams')->ignore($id)];
+            $rules['name'] = ['required', 'max:128', Rule::unique('m_teams')->ignore($id)];
         }
         if ($this->has('email')) {
-            $rules['email'] = ['max:128', 'email', Rule::unique('m_employees')->ignore($id)];
+            $rules['email'] = ['required', 'max:128', 'email', Rule::unique('m_employees')->ignore($id)];
         }
         if ($this->has('password')) {
             $rules['password'] = ['required', 'max:128'];
         }
         if ($this->has('salary')) {
-            $rules['salary'] = ['required', 'numeric','max:99999999999'];
+            $rules['salary'] = ['required', 'numeric', 'max:99999999999'];
         }
 
         if ($this->has('first_name')) {
@@ -53,19 +54,22 @@ class ValidationRequest extends FormRequest
         if ($this->has('address')) {
             $rules['address'] = ['required', 'max:128'];
         }
-
-        if ($this->has('status')) {
-            $rules['status'] = ['required'];
-        }
-
         if ($this->has('birthday')) {
             $rules['birthday'] = ['required'];
         }
-
-        if ($this->has('avatar')) {
-            $rules['avatar'] = ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
-        }
         
+        
+        // $rules['gender'] = ['required'];
+        // $rules['status'] = ['required'];
+        if ($this->has('avatar_image')) {
+
+            if (session('avatar_image') === 'true') {
+                $rules['avatar_image'] = ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
+            } else {
+                $rules['avatar_image'] = ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
+            }
+        }
+        // dd($rules);
         return $rules;
     }
 }

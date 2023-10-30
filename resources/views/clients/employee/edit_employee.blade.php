@@ -31,15 +31,15 @@ use app\Helpers\Constant;
             </div>
             <div class="form-group">
                 <label for="id">Avatar *</label>
-                <input type="file" id="avatar_image" accept="image/*" class="form-control" name="avatar_image" value="{{$employeeDetails->avatar}}">
+                <input type="file" id="avatar_image" accept="image/*" class="form-control" name="avatar_image" >
 
-                <input type="hidden" id="avatar_image_hidden" name="avatar_image_hidden" value="{{ old('avatar_image_hidden') }}">
+                <input type="hidden" id="avatar_image_hidden" name="avatar_image_hidden" value="{{(old('avatar_image_hidden')) ?  old('avatar_image_hidden') : $employeeDetails->avatar}}">
             </div>
             <div class="form-group">
                 <label for="id">Image *</label>
                 <img style="width:250px; height:250px;" src="/storage/images/{{ (old('avatar_image_hidden')) ?  old('avatar_image_hidden') : $employeeDetails->avatar }}">
             </div>
-            @if ($errors->has('avatar'))<p class="alert alert-danger">{{ $errors->first('avatar') }}</p>@endif
+            @if ($errors->has('avatar_image'))<p class="alert alert-danger">{{ $errors->first('avatar_image') }}</p>@endif
             <div class="form-group">
                 <label for="id">Team * </label>
                 <select class="form-control" name='team_name'>
@@ -144,6 +144,7 @@ use app\Helpers\Constant;
 
 </div>
 </body>
-<script src = {{asset ('js/employee/employee.js') }}></script>
+<script src = "{{asset ('employee/employee.js') }}"></script>
+<script src="/js/employee/employee.js"></script>
 
 </html>

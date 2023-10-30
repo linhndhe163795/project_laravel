@@ -1,4 +1,5 @@
 @include('clients.header')
+<div class="container">
 <form action="{{ route('team.edit_confirm') }}" method="POST">
     @csrf
     <div class="form-group">
@@ -12,6 +13,7 @@
     <button type="button" onclick="goBack()" name="reset" class="btn btn-secondary">Back</button>
     <button type="submit" name="save" class="btn btn-primary">Save</button>
 </form>
+</div>
 </body>
 <script>
     function goBack() {

@@ -35,7 +35,9 @@ class LoginController extends Controller
             $profile = $this->employeeRespoitory->getEmployeeByEmail($email);
             Session::put("profile", [[
                 'id' => $profile->id,
-                'email' => $profile->email
+                'email' => $profile->email,
+                'first_name' => $profile->first_name,
+                'last_name' => $profile->last_name
             ]]);
             return redirect(route('home'));
         } else {

@@ -25,7 +25,7 @@ class EloquentPositionRepository extends EloquentBaseRepository implements Posit
     public function getPositionIdByName($name)
     {
         $positionId = $this->model->select('id')
-        ->where('name','=',$name);
+        ->where('name','=',$name)->first();
         return $positionId->id;
     }
 

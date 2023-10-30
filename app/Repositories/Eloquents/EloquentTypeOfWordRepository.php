@@ -32,7 +32,7 @@ class EloquentTypeOfWordRepository extends EloquentBaseRepository implements Typ
     public function getTypeOfWorkIdbyName($name)
     {
         $typeOfWorkId = $this->model->select('id')
-            ->where('type_of_work', '=', $name);
+            ->where('type_of_work', '=', $name)->first();
         return $typeOfWorkId->id;
     }
 }

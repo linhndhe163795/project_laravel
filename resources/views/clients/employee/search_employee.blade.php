@@ -93,9 +93,7 @@ use app\Helpers\Constant;
 </div>
 </body>
 
-<script src = {{asset ('js/employee/employee.js') }}></script>
+<script src="{{ asset('/js/employee/employee.js') }}"></script>
+<script src="/js/employee/employee.js"></script>
 
 </html>
-
-
-<!-- @if ($errors->any())<p class="alert alert-danger">{{ $errors->first('email') }}</p>@endif -->

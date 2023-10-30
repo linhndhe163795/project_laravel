@@ -21,15 +21,15 @@ use App\Helpers\Constant;
     }
 </style>
 <div class="container">
-    <form id = "create_employee" action="{{route('employee.create_confirm')}}" method="POST">
+    <form action="{{route('employee.create_confirm')}}" method="POST">
         <div class="border">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label for="id">Avatar *</label>
 
-                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ $request['avatar_image_hidden'] }}" alt="Hình ảnh">
+                <img style="max-height: 200px;  max-width: 200px;" src="/storage/images/{{ ($request['avatar_image_hidden']) ? $request['avatar_image_hidden'] : $request['avatar'] }}" alt="Hình ảnh">
             </div>
-            <input type="hidden" readonly class="form-control" name="avatar_image_hidden" value="{{$request['avatar_image_hidden'] }}">
+            <input type="hidden" readonly class="form-control" name="avatar_image_hidden" value="{{($request['avatar_image_hidden']) ? $request['avatar_image_hidden'] : $request['avatar'] }}">
             <div class="form-group">
                 <label for="id">Team * </label>
                 <input type="text" readonly class="form-control" name="team_id" value="{{$request['team_name']->name}}">
@@ -55,7 +55,7 @@ use App\Helpers\Constant;
             <div class="form-group">
                 <label for="id">Gender *</label>
                 &ensp;&ensp;
-                <input type="text" readonly class="form-control" name='gender' value="{{($request['request']['status'] == Constant::FEMALE) ? 'Female' : 'Male' }}">
+                <input type="text" readonly class="form-control" name='gender' value="{{($request['request']['gender'] == Constant::FEMALE) ? 'Female' : 'Male' }}">
             </div>
 
             <div class="form-group">
@@ -96,11 +96,12 @@ use App\Helpers\Constant;
             <input type="hidden" class="form-control" name="upd_datetime" readonly value="{{ $currentDateTime }}">
 
         </div>
-        <button type="submit" class="btn btn-primary" name="save">Save</button>
+        <button id="save" type="submit" class="btn btn-primary" name="save">Save</button>
         <button type="button" onclick = "goBack()" class="btn btn-secondary">Back</button>
     </form>
 
 </div>
 </body>
-<script src = {{asset ('js/employee/employee.js') }}></script>
+<script src = "{{asset ('js/employee/employee.js') }}"></script>
+<script src="/js/employee/employee.js"></script>
 </html>

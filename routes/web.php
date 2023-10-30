@@ -39,6 +39,3 @@ Route::group(['prefix' => 'management'], function () {
         Route::get("/delete/{id}",[EmployeeManagementController::class,'delete'])->name('employee.delete');
     });
 });
-
-
-
