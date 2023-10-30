@@ -47,7 +47,8 @@ use App\Helpers\Constant;
             </div>
             <div class="form-group">
                 <label for="id">Password *</label>
-                <input type="password" readonly class="form-control" name="password" id='password' value="{{$request['request']['password']}}">
+                <input type="password" readonly class="form-control" name="password" id='password' value="{{$request['request']['password']}}" >
+                <!-- <input type="text" readonly class="form-control"  id='password' value="{{$request['request']['password']}}"> -->
             </div>
             <div class="form-group">
                 <label for="id">First Name *</label>
@@ -104,12 +105,12 @@ use App\Helpers\Constant;
 
         </div>
         <button type="submit" class="btn btn-primary" name="save">Save</button>
-        <button type="button" onclick="goBack()" class="btn btn-secondary">Back</button>
+        <button type="button" onclick="goBack()" name='back' class="btn btn-secondary">Back</button>
     </form>
 
 </div>
 </body>
 <script src = "{{asset ('employee/employee.js') }}"></script>
 <script src="/js/employee/employee.js"></script>
-
+</script>
 </html>

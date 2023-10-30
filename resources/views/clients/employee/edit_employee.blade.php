@@ -71,7 +71,7 @@ use app\Helpers\Constant;
 
             <div class="form-group">
                 <label for="id">Password *</label>
-                <input id="password" type="password" class="form-control" id='password' name="password" placeholder="Input Password" value="{{empty(old('password')) ?  $employeeDetails->password : old('password')}}">
+                <input id="password" type="password" class="form-control"  name="password" placeholder="Input Password" value="{{empty(old('password')) ?  $employeeDetails->password : old('password')}}" >
             </div>
             @if ($errors->has('password'))<p class="alert alert-danger">{{ $errors->first('password') }}</p>@endif
 
@@ -146,5 +146,17 @@ use app\Helpers\Constant;
 </body>
 <script src = "{{asset ('employee/employee.js') }}"></script>
 <script src="/js/employee/employee.js"></script>
+<script>
+        document.getElementById('password').addEventListener('input', function() {
+            var newPasswordValue = this.value;
+            localStorage.setItem('passwordValue', newPasswordValue);
+        });
 
+        window.addEventListener('load', function() {
+            var savedPassword = localStorage.getItem('passwordValue');
+            if (savedPassword) {
+                document.getElementById('password').value = savedPassword;
+            }
+        });
+    </script>
 </html>

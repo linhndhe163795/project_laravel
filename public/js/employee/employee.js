@@ -46,3 +46,14 @@ function Delete_team(button) {
 function goBack() {
     history.back();
 }
+document.getElementById('password').addEventListener('input', function() {
+    var newPasswordValue = this.value;
+    localStorage.setItem('passwordValue', newPasswordValue);
+});
+
+window.addEventListener('load', function() {
+    var savedPassword = localStorage.getItem('passwordValue');
+    if (savedPassword) {
+        document.getElementById('password').value = savedPassword;
+    }
+});

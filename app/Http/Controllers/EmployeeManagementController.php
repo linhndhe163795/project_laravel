@@ -91,13 +91,10 @@ class EmployeeManagementController extends Controller
             ]));
             $listEmployee = $this->employeeRepository->searchEmployee($data);
             $message = Constant::MESSAGE_CREATE_EMPLOYEE;
-            // session()->forget('avatar_image');
             return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         } else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
-            // dd($request['request']['gender']);    
-            // ($request->avatar_image_hidden === null) ? session()->put('avatar_image','false') : session()->put('avatar_image','true');
             return view('clients.employee.create_employee_confirm', compact('request', 'currentDateTime'));
         }
     }
@@ -107,7 +104,6 @@ class EmployeeManagementController extends Controller
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();
         $employeeDetails = $this->employeeRepository->getEmployeeById($id);
-        // dd($employeeDetails);
         if ($employeeDetails == null) {
             $message = 'Do not exist employee !!! ';
             return view('clients.employee.search_employee', compact('message', 'teamName', 'message'));
@@ -127,7 +123,6 @@ class EmployeeManagementController extends Controller
             $processedData = $this->processData->processEmployeeDataUpdate($data,$employeePassword);
             $emailEmployee = $this->employeeRepository->find($id);
             $newEmail = $validationRequest->input('email');
-            // dd($processedData);
             $this->employeeRepository->update($id, $processedData);
             if ($validationRequest->input('email') !== $emailEmployee->email) {
                 FileHelper::SendMailToUser($processedData, $newEmail);
@@ -136,10 +131,11 @@ class EmployeeManagementController extends Controller
             $message = Constant::MESSAGE_UPDATE_EMPLOYEE;
             return view('clients.employee.search_employee', compact('message', 'teamName','listEmployee'));
         }
+       
        else {
             $currentDateTime = date('Y-m-d H:i:s');
             $request  = $this->processData->processData($validationRequest);
-            // dd($request);
+            
             return view('clients.employee.edit_employee_confirm', compact('request', 'currentDateTime', 'employeeDetails'));
         }
     }

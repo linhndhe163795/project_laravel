@@ -48,22 +48,20 @@ class ProcessData
         $data['position'] = $positionId;
         $data['type_of_work'] = $typeOfWorkId;
         $data['gender'] = ($data['gender'] === 'Male') ? Constant::MALE : Constant::FEMALE;
-        $data['status'] = ($data['status'] === 'Working') ? Constant::WORKING : Constant::RETIRED;
+        $data['status'] = ($data['status'] === 'On Working') ? Constant::WORKING : Constant::RETIRED;
         return $data;
     }
     public function processData($data)
     {
-        // dd($data);
         $data['team_name'] = $this->teamRepository->find($data->input('team_name'));
         $data['type_of_work'] = $this->typeOfWorkRepository->find($data->input('type_of_work'));
         $data['positions'] = $this->positionRepository->find($data->input('position'));
-        // $data['gender'] = ($data['gender'] === 'Male') ? Constant::MALE : Constant::FEMALE;
         $data['request'] = $data;
         $data['avatar'] = FileHelper::storeImage($data, 'public/images');
         $arrayImage = explode("\\" ,$data['avatar_image_hidden']);
         $ImageName = end($arrayImage);
         $data['avatar_image_hidden']  = $ImageName;
-        // dd($data);
+        
         return $data;
     }
 }
