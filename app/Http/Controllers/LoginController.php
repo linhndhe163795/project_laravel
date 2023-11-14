@@ -41,7 +41,7 @@ class LoginController extends Controller
             ]]);
             return redirect(route('home'));
         } else {
-            return redirect(route('login'))->with('error', 'Incorrect Input');
+            return redirect(route('index'))->with('error', 'Incorrect Input');
         }
     }
     public function logout(Request $request)
