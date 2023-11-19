@@ -13,7 +13,6 @@ class TeamManagementController extends Controller
     protected $teamRepository;
     public function __construct(TeamRepository $teamRepository)
     {
-        // $this->middleware('auth');
         $this->teamRepository = $teamRepository;
     }
 

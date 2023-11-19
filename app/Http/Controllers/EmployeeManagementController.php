@@ -69,10 +69,15 @@ class EmployeeManagementController extends Controller
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();
         return view('clients.employee.create_employee', compact('position', 'typeOfWork', 'teamName'));
+        
+
     }
 
     public function createConfirm(ValidationRequest $validationRequest)
     {
+        // echo(session('avatar_image'));
+        // dd($validationRequest);
+        
         $teamName = $this->teamRepository->getTeamName();
         $position = $this->positionRepository->all();
         $typeOfWork = $this->typeOfWorkRepository->all();

@@ -58,11 +58,7 @@ class ValidationRequest extends FormRequest
             $rules['birthday'] = ['required'];
         }
         
-        
-        // $rules['gender'] = ['required'];
-        // $rules['status'] = ['required'];
-        if ($this->has('avatar_image')) {
-
+        if ($this->has('avatar_image_hidden')) {
             if (session('avatar_image') === 'true') {
                 $rules['avatar_image'] = ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
             } else {
